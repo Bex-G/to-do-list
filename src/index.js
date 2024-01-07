@@ -78,9 +78,10 @@ function newList() {
     const listNotes = document.createElement('p');
     listNotes.textContent = document.getElementById('notes').value;
     content.appendChild(listNotes);
-
+    
     const dueDate = document.createElement('p');
-    let formattedDate = format(document.getElementById('date').value, 'PP');
+    let fixedDate = document.getElementById('date').value.replace(/-/g, '\/');
+    let formattedDate = format(fixedDate, 'PP');
     dueDate.textContent = 'Due: ' + formattedDate;
     content.appendChild(dueDate);
 
