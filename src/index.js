@@ -9,25 +9,57 @@ const form = document.createElement('form');
 const name = document.createElement('input');
 name.type = 'text';
 name.id = 'name';
-name.setAttribute('placeholder', 'What is your quest?');
+const nameL = document.createElement('label');
+nameL.setAttribute('for', 'name');
+nameL.innerHTML = 'List Name:';
+form.appendChild(nameL);
+form.appendChild(name);
 
 const notes = document.createElement('input');
 notes.type = 'text';
 notes.id = 'notes';
-notes.setAttribute('placeholder', 'Notes:');
+const notesL = document.createElement('label');
+notesL.setAttribute('for', 'notes');
+notesL.innerHTML = 'Notes:';
+form.appendChild(notesL);
+form.appendChild(notes);
 
 const date = document.createElement('input');
 date.type = 'date';
 date.id = 'date';
-
-form.appendChild(name);
-form.appendChild(notes);
+const dateL = document.createElement('label');
+dateL.setAttribute('for', 'date');
+dateL.innerHTML = 'Due by:';
+form.appendChild(dateL);
 form.appendChild(date);
+
+const priority = document.createElement('fieldset');
+const p1 = document.createElement('input');
+p1.type = 'radio';
+p1.name = 'priority'
+p1.id = 'p1';
+p1.value = 'main quest';
+const p1L = document.createElement('label');
+p1L.setAttribute('for', 'p1');
+p1L.innerHTML = 'Main Quest:';
+priority.appendChild(p1L);
+priority.appendChild(p1);
+const p2 = document.createElement('input');
+p2.type = 'radio';
+p2.name = 'priority'
+p2.id = 'p2';
+p2.value = 'side quest';
+const p2L = document.createElement('label');
+p2L.setAttribute('for', 'p2');
+p2L.innerHTML = 'Side Quest:';
+priority.appendChild(p2L);
+priority.appendChild(p2);
+form.appendChild(priority);
 
 const submitBtn = document.createElement('button');
 submitBtn.type = 'submit';
 form.setAttribute('method', 'get');
-submitBtn.innerHTML = 'new list'
+submitBtn.innerHTML = 'New List'
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
     newList();
