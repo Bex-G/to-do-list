@@ -6,55 +6,55 @@ const content = document.getElementById('content');
 
 const form = document.createElement('form');
 
-const name = document.createElement('input');
-name.type = 'text';
-name.id = 'name';
-const nameL = document.createElement('label');
-nameL.setAttribute('for', 'name');
-nameL.innerHTML = 'List Name:';
-form.appendChild(nameL);
-form.appendChild(name);
+const nameInput = document.createElement('input');
+nameInput.type = 'text';
+nameInput.id = 'nameInput';
+const nameLabel = document.createElement('label');
+nameLabel.setAttribute('for', 'nameInput');
+nameLabel.innerHTML = 'List Name:';
+form.appendChild(nameLabel);
+form.appendChild(nameInput);
 
-const notes = document.createElement('input');
-notes.type = 'text';
-notes.id = 'notes';
-const notesL = document.createElement('label');
-notesL.setAttribute('for', 'notes');
-notesL.innerHTML = 'Notes:';
-form.appendChild(notesL);
-form.appendChild(notes);
+const noteInput = document.createElement('input');
+noteInput.type = 'text';
+noteInput.id = 'noteInput';
+const noteLabel = document.createElement('label');
+noteLabel.setAttribute('for', 'noteInput');
+noteLabel.innerHTML = 'Notes:';
+form.appendChild(noteLabel);
+form.appendChild(noteInput);
 
-const date = document.createElement('input');
-date.type = 'date';
-date.id = 'date';
-const dateL = document.createElement('label');
-dateL.setAttribute('for', 'date');
-dateL.innerHTML = 'Due by:';
-form.appendChild(dateL);
-form.appendChild(date);
+const dateInput = document.createElement('input');
+dateInput.type = 'date';
+dateInput.id = 'dateInput';
+const dateLabel = document.createElement('label');
+dateLabel.setAttribute('for', 'dateInput');
+dateLabel.innerHTML = 'Due by:';
+form.appendChild(dateLabel);
+form.appendChild(dateInput);
 
-const priority = document.createElement('fieldset');
+const priorityInput = document.createElement('fieldset');
 const p1 = document.createElement('input');
 p1.type = 'radio';
-p1.name = 'priority'
+p1.name = 'priorityInput'
 p1.id = 'p1';
 p1.value = 'main quest';
 const p1L = document.createElement('label');
 p1L.setAttribute('for', 'p1');
 p1L.innerHTML = 'Main Quest:';
-priority.appendChild(p1L);
-priority.appendChild(p1);
+priorityInput.appendChild(p1L);
+priorityInput.appendChild(p1);
 const p2 = document.createElement('input');
 p2.type = 'radio';
-p2.name = 'priority'
+p2.name = 'priorityInput'
 p2.id = 'p2';
 p2.value = 'side quest';
 const p2L = document.createElement('label');
 p2L.setAttribute('for', 'p2');
 p2L.innerHTML = 'Side Quest:';
-priority.appendChild(p2L);
-priority.appendChild(p2);
-form.appendChild(priority);
+priorityInput.appendChild(p2L);
+priorityInput.appendChild(p2);
+form.appendChild(priorityInput);
 
 const submitBtn = document.createElement('button');
 submitBtn.type = 'submit';
@@ -68,19 +68,19 @@ form.appendChild(submitBtn);
 
 content.appendChild(form);
 
-// Create a new list with form values
+// Create a new list using form values
 
 function newList() {
     const listName = document.createElement('h2');
-    listName.textContent = document.getElementById('name').value;
+    listName.textContent = document.getElementById('nameInput').value;
     content.appendChild(listName);
 
     const listNotes = document.createElement('p');
-    listNotes.textContent = document.getElementById('notes').value;
+    listNotes.textContent = document.getElementById('noteInput').value;
     content.appendChild(listNotes);
-    
+
     const dueDate = document.createElement('p');
-    let fixedDate = document.getElementById('date').value.replace(/-/g, '\/');
+    let fixedDate = document.getElementById('dateInput').value.replace(/-/g, '\/');
     let formattedDate = format(fixedDate, 'PP');
     dueDate.textContent = 'Due: ' + formattedDate;
     content.appendChild(dueDate);
