@@ -1,89 +1,68 @@
 import {format} from 'date-fns';
 
+function List(name, note, date, priority) {
+    this.name = name;
+    this.note = note;
+    this.date = 'Due: ' + format(date, 'PP');
+    this.priority = priority;
+}
+
 const content = document.getElementById('content');
+const sidebar = document.getElementById('sidebar');
+const sidebarUl = document.getElementById('sidebarUl');
+const main = document.getElementById('main');
 
-// Create form
+// sidebar functions
 
-const form = document.createElement('form');
+document.getElementById('newListBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    openForm();
+});
 
-const nameInput = document.createElement('input');
-nameInput.type = 'text';
-nameInput.id = 'nameInput';
-const nameLabel = document.createElement('label');
-nameLabel.setAttribute('for', 'nameInput');
-nameLabel.innerHTML = 'List Name:';
-form.appendChild(nameLabel);
-form.appendChild(nameInput);
+// form functions
 
-const noteInput = document.createElement('input');
-noteInput.type = 'text';
-noteInput.id = 'noteInput';
-const noteLabel = document.createElement('label');
-noteLabel.setAttribute('for', 'noteInput');
-noteLabel.innerHTML = 'Notes:';
-form.appendChild(noteLabel);
-form.appendChild(noteInput);
+function openForm() {
+    document.getElementById("myForm").style.display = 'block';
+}
 
-const dateInput = document.createElement('input');
-dateInput.type = 'date';
-dateInput.id = 'dateInput';
-const dateLabel = document.createElement('label');
-dateLabel.setAttribute('for', 'dateInput');
-dateLabel.innerHTML = 'Due by:';
-form.appendChild(dateLabel);
-form.appendChild(dateInput);
+function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+}  
 
-const priorityInput = document.createElement('fieldset');
-const p1 = document.createElement('input');
-p1.type = 'radio';
-p1.name = 'priorityInput'
-p1.id = 'p1';
-p1.value = 'main quest';
-const p1L = document.createElement('label');
-p1L.setAttribute('for', 'p1');
-p1L.innerHTML = 'Main Quest:';
-priorityInput.appendChild(p1L);
-priorityInput.appendChild(p1);
-const p2 = document.createElement('input');
-p2.type = 'radio';
-p2.name = 'priorityInput'
-p2.id = 'p2';
-p2.value = 'side quest';
-const p2L = document.createElement('label');
-p2L.setAttribute('for', 'p2');
-p2L.innerHTML = 'Side Quest:';
-priorityInput.appendChild(p2L);
-priorityInput.appendChild(p2);
-form.appendChild(priorityInput);
-
-const submitBtn = document.createElement('button');
-submitBtn.type = 'submit';
-form.setAttribute('method', 'get');
-submitBtn.innerHTML = 'New List'
-submitBtn.addEventListener('click', (e) => {
+document.getElementById('submitBtn').addEventListener('click', (e) => {
     e.preventDefault();
     newList();
+    closeForm();
 });
-form.appendChild(submitBtn);
 
-content.appendChild(form);
+document.getElementById('closeBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    closeForm();
+});
 
-// Create a new list using form values
+// list functions
 
 function newList() {
-    const listName = document.createElement('h2');
-    listName.textContent = document.getElementById('nameInput').value;
-    content.appendChild(listName);
 
-    const listNotes = document.createElement('p');
-    listNotes.textContent = document.getElementById('noteInput').value;
-    content.appendChild(listNotes);
+    var name = document.getElementById('nameInput').value;
+    var note = document.getElementById('noteInput').value;
+    var date = document.getElementById('dateInput').value.replace(/-/g, '\/');
+    var priority = document.querySelector('input[name="priorityInput"]:checked').value;
+
+    let list = new List(name, note, date, priority);
+
+    const listName = document.createElement('h2');
+    listName.textContent = list.name;
+    listName.id = 'listName';
+    main.appendChild(listName);
+
+    const listNote = document.createElement('p');
+    listNote.textContent = list.note;
+    main.appendChild(listNote);
 
     const dueDate = document.createElement('p');
-    let fixedDate = document.getElementById('dateInput').value.replace(/-/g, '\/');
-    let formattedDate = format(fixedDate, 'PP');
-    dueDate.textContent = 'Due: ' + formattedDate;
-    content.appendChild(dueDate);
+    dueDate.textContent = list.date;
+    main.appendChild(dueDate);
 
     const addDiv = document.createElement('div');
     addDiv.id = 'addDiv';
@@ -98,11 +77,11 @@ function newList() {
     addBtn.addEventListener('click', newListItem);
     addDiv.appendChild(addBtn);
 
-    content.appendChild(addDiv);
+    main.appendChild(addDiv);
 
     const ul = document.createElement('ul');
     ul.id = 'myList';
-    content.appendChild(ul);
+    main.appendChild(ul);
 }
 
 // Create a new list item when clicking on the 'Add' button
@@ -152,4 +131,4 @@ for (i = 0; i < close.length; i++) {
     let div = this.parentElement;
     div.style.display = 'none';
     }
-}
+};
