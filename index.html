@@ -10,6 +10,40 @@
 </head>
 <body>
     <div id="content">
+
+        <div id="sidebar">
+            <button id="newListBtn">+</button>
+            <ul id="sidebarUl"></ul>
+        </div>
+
+        <div id="main">
+
+        </div>
+
+        <div class="form-popup" id="myForm">
+            <form class="form-container">
+                <h1>What is your quest?</h1>
+                
+                <label for="nameInput">List Name</label>
+                <input type="text" name="name" id="nameInput">
+                
+                <label for="noteInput">Notes:</label>
+                <input type="text" name="note" id="noteInput">
+
+                <label for="dateInput">Due by:</label>
+                <input type="date" name="date" id="dateInput">
+
+                <fieldset>
+                    <label for="p1">Main Quest</label>
+                    <input type="radio" name="priorityInput" id="p1">
+                    <label for="p2">Side Quest</label>
+                    <input type="radio" name="priorityInput" id="p2">
+                </fieldset>
+
+                <button id="submitBtn">Add Quest!</button>
+                <button id="closeBtn">Close</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>
