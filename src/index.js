@@ -29,14 +29,24 @@ function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }  
 
+function resetForm() {
+    document.getElementById('nameInput').value = null;
+    document.getElementById('noteInput').value = null;
+    document.getElementById('dateInput').value = null;
+    document.querySelector('input[name="priorityInput"]').value = null;
+}
+
 document.getElementById('submitBtn').addEventListener('click', (e) => {
     e.preventDefault();
     newList();
+    addToSidebar();
+    resetForm();
     closeForm();
 });
 
 document.getElementById('closeBtn').addEventListener('click', (e) => {
     e.preventDefault();
+    resetForm();
     closeForm();
 });
 
@@ -60,9 +70,13 @@ function newList() {
     listNote.textContent = list.note;
     main.appendChild(listNote);
 
-    const dueDate = document.createElement('p');
-    dueDate.textContent = list.date;
-    main.appendChild(dueDate);
+    const listDate = document.createElement('p');
+    listDate.textContent = list.date;
+    main.appendChild(listDate);
+
+    const listPriority = document.createElement('p');
+    listPriority.textContent = list.priority;
+    main.appendChild(listPriority);
 
     const addDiv = document.createElement('div');
     addDiv.id = 'addDiv';
@@ -82,6 +96,13 @@ function newList() {
     const ul = document.createElement('ul');
     ul.id = 'myList';
     main.appendChild(ul);
+}
+
+function addToSidebar() {
+    const li = document.createElement('button');
+    li.innerHTML = document.getElementById('nameInput').value;
+    sidebarUl.appendChild(li);
+    sidebar.appendChild(sidebarUl);
 }
 
 // Create a new list item when clicking on the 'Add' button
