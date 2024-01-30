@@ -25,15 +25,15 @@ function resetForm() {
     document.querySelector('input[name="priorityInput"]').value = null;
 };
 
-let counter = 0;
+let n = 0; // variable used to keep track of list/tab id nbers
 
 document.getElementById('submitBtn').addEventListener('click', (e) => {
     e.preventDefault();
-    counter++
-    addTab(counter);
-    addList(counter);
-    addToSidebar(counter);
-    openTab(counter);
+    n++
+    addTab(n);
+    addList(n);
+    addToSidebar(n);
+    openTab(n);
     resetForm();
     closeForm();
 });
@@ -46,7 +46,7 @@ document.getElementById('closeBtn').addEventListener('click', (e) => {
 
 // list functions
 
-function addTab(counter) {
+function addTab(n) {
 
     let name = document.getElementById('nameInput').value;
     let note = document.getElementById('noteInput').value;
@@ -54,58 +54,62 @@ function addTab(counter) {
     let formattedDate = 'Due: ' + format(date, 'PP');
     let priority = document.querySelector('input[name="priorityInput"]:checked').value;
 
-    const tabContent = document.createElement('div');
+    let tabContent = document.createElement('div');
     tabContent.classList = 'tab-content';
-    tabContent.setAttribute('id', 'list-' + counter);
+    tabContent.setAttribute('id', 'tab-' + n);
 
-    const listName = document.createElement('h2');
+    let listName = document.createElement('h2');
     listName.textContent = name;
     tabContent.appendChild(listName);
 
-    const listNote = document.createElement('p');
+    let listNote = document.createElement('p');
     listNote.textContent = note;
     tabContent.appendChild(listNote);
 
-    const listDate = document.createElement('p');
+    let listDate = document.createElement('p');
     listDate.textContent = formattedDate;
     tabContent.appendChild(listDate);
 
-    const listPriority = document.createElement('p');
+    let listPriority = document.createElement('p');
     listPriority.textContent = priority;
     tabContent.appendChild(listPriority);
 
     listContainer.appendChild(tabContent);
 };
 
-function addList(counter) {
+function addList(n) {
 
-    const tabContent = document.getElementById('list-' + counter);
+    let tabContent = document.getElementById('tab-' + n);
 
-    const addDiv = document.createElement('addDiv');
-    const addInput = document.createElement('input');
+    let addDiv = document.createElement('addDiv');
+    let addInput = document.createElement('input');
     addInput.type = 'text';
-    addInput.setAttribute('id', 'addInput-' + counter)
+    addInput.setAttribute('id', 'addInput-' + n);
     addDiv.appendChild(addInput);
 
-    const addBtn = document.createElement('button');
+    let addBtn = document.createElement('button');
     addBtn.type = 'submit';
     addBtn.innerHTML = 'add'
-    addBtn.addEventListener('click', newListItem(counter));
+    addBtn.setAttribute('id', 'addBtn-' + n);
+    addBtn.addEventListener('click', (e) => {
+        newListItem(e.target.id);
+        });
     addDiv.appendChild(addBtn);
     tabContent.appendChild(addDiv);
 
-    const ul = document.createElement('ul');
-    ul.id = 'myList';
+    let ul = document.createElement('ul');
+    ul.setAttribute('id', 'list-' + n)
     tabContent.appendChild(ul);
     listContainer.appendChild(tabContent);
 };
 
-function addToSidebar(counter) {
+function addToSidebar(n) {
     
-    const sidebarUl = document.getElementById('sidebarUl');
-    const li = document.createElement('button');
+    let sidebarUl = document.getElementById('sidebarUl');
+
+    let li = document.createElement('button');
     li.classList = 'tab-link';
-    li.setAttribute('id', counter)
+    li.setAttribute('id', n);
     li.innerHTML = document.getElementById('nameInput').value;
     li.addEventListener('click', (e) => {
         openTab(e.target.id);
@@ -116,32 +120,35 @@ function addToSidebar(counter) {
 
 // Create a new list item when clicking on the 'Add' button
 
-function newListItem(counter) {
-    console.log(counter);
+function newListItem(event) {
 
-    // let li = document.createElement('li');
-    // let inputValue = document.getElementById(counter).value;
-    // let t = document.createTextNode(inputValue);
-    // li.appendChild(t);
-    // if (inputValue === '') {
-    //     alert('You must write something!');
-    //   } else {
-    //     document.getElementById('myList').appendChild(li);
-    //   }
-    //   document.getElementById(counter).value = '';
+    let index = event.indexOf('-');
+    let n = event.substring(index + 1);
 
-    //   let span = document.createElement('span');
-    //   let txt = document.createTextNode('\u00D7');
-    //   span.className = 'close';
-    //   span.appendChild(txt);
-    //   li.appendChild(span);
+    let li = document.createElement('li');
+    let inputValue = document.getElementById('addInput-' + n).value;
+    let t = document.createTextNode(inputValue);
+    li.appendChild(t);
+
+    if (inputValue === '') {
+        alert('You must write something!');
+        } else {
+        document.getElementById('list-' + n).appendChild(li);
+        }
+        document.getElementById('addInput-' + n).value = '';
+
+        let span = document.createElement('span');
+        let txt = document.createTextNode('\u00D7');
+        span.className = 'close';
+        span.appendChild(txt);
+        li.appendChild(span);
     
-    //   for (i = 0; i < close.length; i++) {
-    //     close[i].onclick = function() {
-    //       let div = this.parentElement;
-    //       div.style.display = 'none';
-    //     }
-    // }
+      for (i = 0; i < close.length; i++) {
+        close[i].onclick = function() {
+          let div = this.parentElement;
+          div.style.display = 'none';
+        }
+    }
 };
 
 // Create a 'close' button and append it to each list item
@@ -167,20 +174,14 @@ for (i = 0; i < close.length; i++) {
 
 // tab management
 
-function openTab(counter) { 
+function openTab(n) { 
 
-    let activeList = 'list-' + counter;
+    let activeTab = 'tab-' + n;
 
-    const tabContent = document.getElementsByClassName("tab-content");
+    let tabContent = document.getElementsByClassName('tab-content');
     for (i = 0; i < tabContent.length; i++) {
-    tabContent[i].style.display = "none";
+    tabContent[i].style.display = 'none';
     }
 
-    const tabLinks = document.getElementsByClassName("tab-link");
-    for (i = 0; i < tabLinks.length; i++) {
-    tabLinks[i].className = tabLinks[i].className.replace(" active", "");
-    }
-
-    document.getElementById(activeList).style.display = "block";
-    // evt.currentTarget.className += " active";
+    document.getElementById(activeTab).style.display = 'block';
 };
