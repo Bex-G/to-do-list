@@ -189,11 +189,13 @@ for (i = 0; i < close.length; i++) {
 function openTab(n) { 
 
     let activeTab = 'tab-' + n;
+    let addInput = 'addInput-' + n;
 
     let tabContent = document.getElementsByClassName('tab-content');
     for (i = 0; i < tabContent.length; i++) {
     tabContent[i].style.display = 'none';
-    }
+    };
 
     document.getElementById(activeTab).style.display = 'block';
+    document.getElementById(addInput).value = null;
 };
