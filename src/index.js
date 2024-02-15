@@ -22,13 +22,14 @@ function resetForm() {
     document.getElementById('nameInput').value = null;
     document.getElementById('noteInput').value = null;
     document.getElementById('dateInput').value = null;
-    document.querySelector('input[name="priorityInput"]').value = null;
+    document.getElementById('priorityInput').checked = 0;
 };
 
-let n = 0; // variable used to keep track of list/tab id nbers
+let n = 0; // variable used to keep track of list/tab id numbers
 
 document.getElementById('submitBtn').addEventListener('click', (e) => {
     e.preventDefault();
+    if (validateForm() != false){
     n++
     addTab(n);
     addList(n);
@@ -36,6 +37,7 @@ document.getElementById('submitBtn').addEventListener('click', (e) => {
     openTab(n);
     resetForm();
     closeForm();
+    }
 });
 
 document.getElementById('closeBtn').addEventListener('click', (e) => {
@@ -46,13 +48,20 @@ document.getElementById('closeBtn').addEventListener('click', (e) => {
 
 // list functions
 
+function validateForm() {
+
+    let name = document.getElementById('nameInput').value;
+    if (name == "") {
+        alert("List name is required!")
+        return false;
+    }
+};
+
 function addTab(n) {
 
     let name = document.getElementById('nameInput').value;
     let note = document.getElementById('noteInput').value;
     let date = document.getElementById('dateInput').value.replace(/-/g, '\/');
-    let formattedDate = 'Due: ' + format(date, 'PP');
-    let priority = document.querySelector('input[name="priorityInput"]:checked').value;
 
     let tabContent = document.createElement('div');
     tabContent.classList = 'tab-content';
@@ -66,13 +75,16 @@ function addTab(n) {
     listNote.textContent = note;
     tabContent.appendChild(listNote);
 
-    let listDate = document.createElement('p');
-    listDate.textContent = formattedDate;
-    tabContent.appendChild(listDate);
+    if (date != ""){
+        let listDate = document.createElement('p');
+        listDate.textContent = 'Due: ' + format(date, 'PP');
+        tabContent.appendChild(listDate);
+    };
 
-    let listPriority = document.createElement('p');
-    listPriority.textContent = priority;
-    tabContent.appendChild(listPriority);
+    if (document.getElementById('priorityInput').checked == 1){
+        console.log("I'm important!");
+        // add classlist
+    };
 
     listContainer.appendChild(tabContent);
 };
@@ -112,7 +124,7 @@ function addToSidebar(n) {
     li.setAttribute('id', n);
     li.innerHTML = document.getElementById('nameInput').value;
     li.addEventListener('click', (e) => {
-        openTab(e.target.id);
+        openTab(e.target.id); // gets correct 'n' value
         });
     sidebarUl.appendChild(li);
     sidebar.appendChild(sidebarUl);
