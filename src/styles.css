@@ -22,3 +22,11 @@
 .tab-content {
     display: none;
 }
+
+.important {
+    background-color: red;
+}
+
+.active {
+    background-color: green;
+}

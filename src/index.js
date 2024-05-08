@@ -8,7 +8,7 @@ document.getElementById('newListBtn').addEventListener('click', (e) => {
     openForm();
 });
 
-// form functions
+// FORM FUNCTIONS
 
 function openForm() {
     document.getElementById("myForm").style.display = 'block';
@@ -24,6 +24,8 @@ function resetForm() {
     document.getElementById('dateInput').value = null;
     document.getElementById('priorityInput').checked = 0;
 };
+
+// FORM EVENTS
 
 let n = 0; // variable used to keep track of list/tab id numbers
 
@@ -46,7 +48,7 @@ document.getElementById('closeBtn').addEventListener('click', (e) => {
     closeForm();
 });
 
-// list functions
+// TAB + LIST FUNCTIONS
 
 function validateForm() {
 
@@ -82,8 +84,7 @@ function addTab(n) {
     };
 
     if (document.getElementById('priorityInput').checked == 1){
-        console.log("I'm important!");
-        // add classlist
+        tabContent.classList.add('important');
     };
 
     listContainer.appendChild(tabContent);
@@ -120,9 +121,10 @@ function addToSidebar(n) {
     let sidebarUl = document.getElementById('sidebarUl');
 
     let li = document.createElement('button');
-    li.classList = 'tab-link';
     li.setAttribute('id', n);
+    li.classList = 'tabBtn';
     li.innerHTML = document.getElementById('nameInput').value;
+
     li.addEventListener('click', (e) => {
         openTab(e.target.id); // gets correct 'n' value
         });
@@ -130,7 +132,7 @@ function addToSidebar(n) {
     sidebar.appendChild(sidebarUl);
 };
 
-// Create a new list item when clicking on the 'Add' button
+// create new li with 'add' button
 
 function newListItem(event) {
 
@@ -163,7 +165,7 @@ function newListItem(event) {
     }
 };
 
-// Create a 'close' button and append it to each list item
+// append 'close' button to each li
 let myNodelist = document.getElementsByTagName('li');
 var i;
 for (i = 0; i < myNodelist.length; i++) {
@@ -174,7 +176,7 @@ for (i = 0; i < myNodelist.length; i++) {
     myNodelist[i].appendChild(span);
     };
 
-// Click on a close button to hide the current list item
+// enable close button to hide li
 let close = document.getElementsByClassName('close');
 var i;
 for (i = 0; i < close.length; i++) {
@@ -184,18 +186,28 @@ for (i = 0; i < close.length; i++) {
     }
 };
 
-// tab management
+// TAB MANAGEMENT FUNCTIONS
 
 function openTab(n) { 
 
-    let activeTab = 'tab-' + n;
-    let addInput = 'addInput-' + n;
+    // hide all tab content, then display active tab
 
     let tabContent = document.getElementsByClassName('tab-content');
     for (i = 0; i < tabContent.length; i++) {
     tabContent[i].style.display = 'none';
     };
+    document.getElementById('tab-' + n).style.display = 'block';
 
-    document.getElementById(activeTab).style.display = 'block';
+    // remove '.active' from all tabs, then make tab n 'active'
+
+    let els = document.querySelectorAll('.tabBtn');
+    for (var i = 0; i < els.length; i++) {
+        els[i].classList.remove('active')
+    };
+    document.getElementById(n).classList.add('active');
+
+    // clear input values when switching between tabs
+    
+    let addInput = 'addInput-' + n;
     document.getElementById(addInput).value = null;
 };
