@@ -20,9 +20,7 @@ function closeForm() {
 
 function resetForm() {
     document.getElementById('nameInput').value = null;
-    document.getElementById('noteInput').value = null;
     document.getElementById('dateInput').value = null;
-    document.getElementById('priorityInput').checked = 0;
 };
 
 // FORM EVENTS
@@ -62,30 +60,56 @@ function validateForm() {
 function addTab(n) {
 
     let name = document.getElementById('nameInput').value;
-    let note = document.getElementById('noteInput').value;
-    let date = document.getElementById('dateInput').value.replace(/-/g, '\/');
+    let date = document.getElementById('dateInput').value;
 
     let tabContent = document.createElement('div');
     tabContent.classList = 'tab-content';
-    tabContent.setAttribute('id', 'tab-' + n);
+    tabContent.id = ('tab-' + n);
+
+    let tabHead = document.createElement('div');
+    tabHead.classList = 'tab-head';
 
     let listName = document.createElement('h2');
     listName.textContent = name;
-    tabContent.appendChild(listName);
+    tabHead.appendChild(listName); 
 
-    let listNote = document.createElement('p');
-    listNote.textContent = note;
-    tabContent.appendChild(listNote);
+    let editBtn = document.createElement('button');
+    editBtn.innerHTML = '...';
+    editBtn.addEventListener('click', (e) => {
+        openForm(); // this isn't right... maybe it needs to be a different form completely?
+        document.getElementById('nameInput').value = name;
+        document.getElementById('dateInput').value = date;
+        });
+    tabHead.appendChild(editBtn);
+    tabContent.appendChild(tabHead);
 
+    let dateLine = document.createElement('div');
+    dateLine.classList = ('date-line');
+
+    let altDate = date.replace(/-/g, '\/');
     if (date != ""){
-        let listDate = document.createElement('p');
-        listDate.textContent = 'Due: ' + format(date, 'PP');
-        tabContent.appendChild(listDate);
+        let dueDate = document.createElement('p');
+        dueDate.textContent = 'due: ' + format(altDate, 'PP');
+        dateLine.appendChild(dueDate);
     };
 
-    if (document.getElementById('priorityInput').checked == 1){
-        tabContent.classList.add('important');
-    };
+    let label = document.createElement('label');
+    label.for = 'priorityInput';
+    label.innerHTML = 'main quest?'
+    dateLine.appendChild(label);
+    let priorityInput = document.createElement('input');
+    priorityInput.type = 'checkbox';
+    priorityInput.id = 'priorityInput';
+    priorityInput.addEventListener('change' , (e) => {
+        tabContent.classList.toggle('important');
+    });
+    dateLine.appendChild(priorityInput);
+    tabContent.appendChild(dateLine);
+
+    let notes = document.createElement('p');
+    notes.textContent = 'notes:';
+    notes.contentEditable = 'true';
+    tabContent.appendChild(notes);
 
     listContainer.appendChild(tabContent);
 };
@@ -94,24 +118,25 @@ function addList(n) {
 
     let tabContent = document.getElementById('tab-' + n);
 
-    let addDiv = document.createElement('addDiv');
+    let div = document.createElement('div');
+    div.id = ('addDiv');
     let addInput = document.createElement('input');
     addInput.type = 'text';
-    addInput.setAttribute('id', 'addInput-' + n);
-    addDiv.appendChild(addInput);
+    addInput.id = ('addInput-' + n);
+    div.appendChild(addInput);
 
     let addBtn = document.createElement('button');
     addBtn.type = 'submit';
     addBtn.innerHTML = 'add'
-    addBtn.setAttribute('id', 'addBtn-' + n);
+    addBtn.id = ('addBtn-' + n);
     addBtn.addEventListener('click', (e) => {
         newListItem(e.target.id);
         });
-    addDiv.appendChild(addBtn);
-    tabContent.appendChild(addDiv);
+    div.appendChild(addBtn);
+    tabContent.appendChild(div);
 
     let ul = document.createElement('ul');
-    ul.setAttribute('id', 'list-' + n)
+    ul.id = ('list-' + n)
     tabContent.appendChild(ul);
     listContainer.appendChild(tabContent);
 };
@@ -121,8 +146,8 @@ function addToSidebar(n) {
     let sidebarUl = document.getElementById('sidebarUl');
 
     let li = document.createElement('button');
-    li.setAttribute('id', n);
     li.classList = 'tabBtn';
+    li.id =  (n);
     li.innerHTML = document.getElementById('nameInput').value;
 
     li.addEventListener('click', (e) => {
@@ -153,7 +178,7 @@ function newListItem(event) {
 
         let span = document.createElement('span');
         let txt = document.createTextNode('\u00D7');
-        span.className = 'close';
+        span.classList = 'close';
         span.appendChild(txt);
         li.appendChild(span);
     
@@ -171,7 +196,7 @@ var i;
 for (i = 0; i < myNodelist.length; i++) {
     let span = document.createElement('span');
     let txt = document.createTextNode('\u00D7');
-    span.className = 'close';
+    span.classList = 'close';
     span.appendChild(txt);
     myNodelist[i].appendChild(span);
     };
@@ -201,7 +226,7 @@ function openTab(n) {
     // remove '.active' from all tabs, then make tab n 'active'
 
     let els = document.querySelectorAll('.tabBtn');
-    for (var i = 0; i < els.length; i++) {
+    for (i = 0; i < els.length; i++) {
         els[i].classList.remove('active')
     };
     document.getElementById(n).classList.add('active');

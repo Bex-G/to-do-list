@@ -17,7 +17,11 @@
     transform: translate(-50%, -50%);
     width: 50%;
     z-index: 9;
-  }
+}
+
+.tab-head {
+    display: flex;
+}
 
 .tab-content {
     display: none;
