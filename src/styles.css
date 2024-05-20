@@ -7,30 +7,104 @@
 #content {
     display: grid;
     grid-template-columns: 1fr 4fr;
+    padding: .5rem;
 }
 
-.form-popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    z-index: 9;
-}
-
-.tab-head {
+#sidebar {
     display: flex;
+    flex-direction: column;
+    margin-right: 10px;
 }
+
+#sidebarUl {
+    display: flex;
+    flex-direction: column;
+}
+
+#newListBtn {
+    padding: 1.5rem 0;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.tab-btn {
+    padding: .5rem 0;
+    border-radius: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* no touchie! */
 
 .tab-content {
     display: none;
 }
 
+.list-info {
+    border-bottom: 1px dotted black;
+}
+
+.tab-header {
+    text-align: center;
+    position: relative;
+}
+
+#headerR {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#removeBtn {
+    padding: 5px;
+}
+
+#priority {
+    display: flex;
+    padding-left: 2%;
+}
+
+#priority input {
+    margin-left: 5px;
+}
+
+#date {
+    margin: 5px 0px;
+    padding-left: 2%;
+}
+
+#notes {
+    margin-bottom: 10px;
+    padding-left: 2%;
+}
+
+.addInput {
+    width: 45%;
+    margin: 5px 5px 5px 0px;
+}
+
+.listUl li {
+    margin: 10px 0px 0px 25px;
+    position: relative;
+    border-radius: 5px;
+}
+
+.close {
+    position: absolute;
+    right: 0;
+    padding-right: 5px;
+}
+
+/* event-triggered classes */
+
 .important {
-    background-color: red;
+    background-color: rgb(255, 0, 0, 0.7);
 }
 
 .active {
-    background-color: green;
+    background-color: rgb(0, 75, 125, 0.2);
+}
+
+.hover {
+    background-color: rgb(0, 75, 125, 0.2);
 }
