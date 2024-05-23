@@ -1,7 +1,5 @@
 // import {format} from "date-fns";
 
-// const { intlFormat } = require("date-fns");
-
 const sidebar = document.getElementById("sidebar");
 const tabContainer = document.getElementById("tabContainer");
 
@@ -10,10 +8,29 @@ document.getElementById("newListBtn").addEventListener("click", (e) => {
     addTab(n);
     addList(n);
     addToSidebar(n);
+    document.getElementById(n).setAttribute("data-date", null); // make default date = null for sorting purposes
     openTab(n);
 })
 
-let n = 0; // variable used to keep track of list/tab id numbers
+let n = 0; // variable used to keep track of unique lists + .tab-btn id numbers
+
+function comparator(a, b) { 
+    if (a.dataset.date < b.dataset.date) 
+        return -1; 
+    if (a.dataset.date > b.dataset.date) 
+        return 1; 
+    return 0; 
+} 
+
+function sortByDate() { 
+    var dates = 
+        document.querySelectorAll("[data-date]"); 
+    var datesArray = Array.from(dates); 
+    let sorted = datesArray.sort(comparator); 
+    sorted.forEach(e => 
+        document.querySelector("#sidebarUl"). 
+            appendChild(e)); 
+} 
 
 function addTab(n) {
 
@@ -88,6 +105,10 @@ function addTab(n) {
     let dateInput = document.createElement("input");
     dateInput.type = "date";
     dateInput.id = ("dateInput" + n);
+    dateInput.addEventListener("change", () => {
+        document.getElementById(n).setAttribute("data-date", dateInput.value);
+        sortByDate();
+    });
     d.appendChild(dateInput);
 
     let notes = document.createElement("p");
@@ -145,7 +166,7 @@ function addToSidebar(n) {
 
     let li = document.createElement("button");
     li.classList = "tab-btn";
-    li.id =  (n);
+    li.id = n;
     li.innerHTML = ("Quest " + n);
 
     li.addEventListener("click", (e) => {
@@ -155,8 +176,28 @@ function addToSidebar(n) {
     sidebar.appendChild(sidebarUl);
 }
 
-// create new li with "add" button
+function openTab(n) { 
 
+    // hide all tab content, then display active tab
+    let tabContent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabContent.length; i++) {
+    tabContent[i].style.display = "none";
+    };
+    document.getElementById("tab-" + n).style.display = "block";
+
+    // remove ".active" from all tabs, then make tab n "active"
+    let els = document.querySelectorAll(".tab-btn");
+    for (i = 0; i < els.length; i++) {
+        els[i].classList.remove("active")
+    };
+    document.getElementById(n).classList.add("active");
+
+    // clear input values when switching between tabs
+    let addInput = "addInput-" + n;
+    document.getElementById(addInput).value = null;
+};
+
+// create new li with "add" button
 function newListItem(event) {
 
     let index = event.indexOf("-");
@@ -214,35 +255,3 @@ for (i = 0; i < close.length; i++) {
     div.style.display = "none";
     }
 }
-
-// TAB MANAGEMENT FUNCTIONS
-
-function openTab(n) { 
-
-    // hide all tab content, then display active tab
-
-    let tabContent = document.getElementsByClassName("tab-content");
-    for (i = 0; i < tabContent.length; i++) {
-    tabContent[i].style.display = "none";
-    };
-    document.getElementById("tab-" + n).style.display = "block";
-
-    // remove ".active" from all tabs, then make tab n "active"
-
-    let els = document.querySelectorAll(".tab-btn");
-    for (i = 0; i < els.length; i++) {
-        els[i].classList.remove("active")
-    };
-    document.getElementById(n).classList.add("active");
-
-    // clear input values when switching between tabs
-    
-    let addInput = "addInput-" + n;
-    document.getElementById(addInput).value = null;
-
-    // manage form
-
-    // if (form.classList.contains("open")) {
-    // closeForm();
-    // };
-};
