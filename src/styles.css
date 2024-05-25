@@ -41,12 +41,18 @@
 }
 
 .list-info {
+    border-left: 1px dotted black;
     border-bottom: 1px dotted black;
 }
 
 .tab-header {
     text-align: center;
     position: relative;
+}
+
+.tab-header h1 {
+    border-radius: 0px 5px 5px 0px;
+    padding: 5px;
 }
 
 #headerR {
@@ -56,12 +62,13 @@
 }
 
 #removeBtn {
-    padding: 5px;
+    padding: 2px;
 }
 
 #priority {
     display: flex;
     padding-left: 2%;
+    margin-top: 10px;
 }
 
 #priority input {
@@ -69,21 +76,40 @@
 }
 
 #date {
-    margin: 5px 0px;
+    margin: 10px 0px;
     padding-left: 2%;
 }
 
-#notes {
+#notebook {
     margin-bottom: 10px;
+    padding: 0 2% 0 2%;
+}
+
+#notebookLabel {
+    display: block;
+}
+
+textarea {
+    width: 100%;
+    padding: 2px 2px 2px 5px;
+    resize: vertical;
+}
+
+#add {
     padding-left: 2%;
 }
 
-.addInput {
+.add-input {
     width: 45%;
     margin: 5px 5px 5px 0px;
+    padding: 2px 2px 2px 5px;
 }
 
-.listUl li {
+.add-btn {
+    padding: 2px;
+}
+
+.list-ul li {
     margin: 10px 0px 0px 25px;
     position: relative;
     border-radius: 5px;
@@ -98,11 +124,15 @@
 /* event-triggered classes */
 
 .important {
-    background-color: rgb(255, 0, 0, 0.7);
+    background-color: rgb(255, 0, 0, 0.4);
 }
 
 .active {
     background-color: rgb(0, 75, 125, 0.2);
+}
+
+.important.active {
+    background-image: linear-gradient(to right, rgb(0, 75, 125, 0.2) 85%, rgb(255, 0, 0, 0.4) 15%); 
 }
 
 .hover {

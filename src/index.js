@@ -1,5 +1,3 @@
-// import {format} from "date-fns";
-
 const sidebar = document.getElementById("sidebar");
 const tabContainer = document.getElementById("tabContainer");
 
@@ -51,15 +49,19 @@ function addTab(n) {
     listName.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
             listName.blur();
-            document.getElementById(n).textContent = (listName.textContent.length <= 12) 
-            ? listName.textContent 
-            : (listName.textContent.substring(0,12)) + "...";
-        }
+            if (listName.textContent.length >= 12) {
+                listName.textContent.substring(0,12) + "...";
+            } if (listName.textContent.length < 1) {
+                document.getElementById(n).textContent = "...";
+            } else (document.getElementById(n).textContent = listName.textContent);
+        }  
     })
     listName.addEventListener("focusout", () => {
-        document.getElementById(n).textContent = (listName.textContent.length <= 12) 
-        ? listName.textContent 
-        : (listName.textContent.substring(0,12)) + "...";
+        if (listName.textContent.length >= 12) {
+            listName.textContent.substring(0,12) + "...";
+        } if (listName.textContent.length < 1) {
+            document.getElementById(n).textContent = "...";
+        } else (document.getElementById(n).textContent = listName.textContent);
     })
     header.appendChild(listName); 
 
@@ -92,7 +94,8 @@ function addTab(n) {
     priorityInput.type = "checkbox";
     priorityInput.id = ("priorityInput" + n);
     priorityInput.addEventListener("change" , (e) => {
-        info.classList.toggle("important");
+        document.getElementById(n).classList.toggle("important"); // colors tab-btn
+        document.getElementById("name" + n).classList.toggle("important"); // colors name header
     });
     p.appendChild(priorityInput);
 
@@ -111,31 +114,34 @@ function addTab(n) {
     });
     d.appendChild(dateInput);
 
-    let notes = document.createElement("p");
-    notes.id = "notes";
-    notes.textContent = "notes:";
-    notes.contentEditable = "true";
+    let nb = document.createElement("div");
+    nb.id = "notebook";
+    let nbL = document.createElement("label");
+    nbL.id = "notebookLabel";
+    nbL.htmlFor = ("notes"  + n);
+    nbL.innerHTML = "notes:";
+    let notes = document.createElement("textarea");
+    notes.id = ("notes"  + n);
+    nb.appendChild(nbL);
+    nb.appendChild(notes);
 
     info.appendChild(p);
     info.appendChild(d);
-    info.appendChild(notes);
+    info.appendChild(nb);
     tabContent.appendChild(info);
     tabContainer.appendChild(tabContent);
 }
-
-// function formatDate() {
-//     let date = document.getElementById("dateInput" + n).value.replace(/-/g, "\/");
-// }
 
 function addList(n) {
 
     let tabContent = document.getElementById("tab-" + n);
 
     let div = document.createElement("div");
+    div.id = "add";
     let addInput = document.createElement("input");
     addInput.type = "text";
     addInput.id = ("addInput-" + n);
-    addInput.classList = "addInput";
+    addInput.classList = "add-input";
     addInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
             newListItem(e.target.id);
@@ -147,6 +153,7 @@ function addList(n) {
     addBtn.type = "submit";
     addBtn.innerHTML = "add"
     addBtn.id = ("addBtn-" + n);
+    addBtn.classList = "add-btn";
     addBtn.addEventListener("click", (e) => {
         newListItem(e.target.id);
         });
@@ -155,7 +162,7 @@ function addList(n) {
 
     let ul = document.createElement("ul");
     ul.id = ("list-" + n)
-    ul.classList = "listUl";
+    ul.classList = "list-ul";
     tabContent.appendChild(ul);
     tabContainer.appendChild(tabContent);
 }
