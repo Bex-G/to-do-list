@@ -1,4 +1,4 @@
-import { activateTab } from "./logic";
+import { sortByDate, activateTab } from "./logic";
 
 const sidebar = document.getElementById("sidebar");
 const tabContainer = document.getElementById("tabContainer");
@@ -86,24 +86,6 @@ function createPriority(info, n) {
     info.appendChild(p);
 }
 
-function comparator(a, b) { 
-    if (a.dataset.date < b.dataset.date) 
-        return -1; 
-    if (a.dataset.date > b.dataset.date) 
-        return 1; 
-    return 0; 
-} 
-
-function sortByDate() { 
-    var dates = 
-        document.querySelectorAll("[data-date]"); 
-    var datesArray = Array.from(dates); 
-    let sorted = datesArray.sort(comparator); 
-    sorted.forEach(e => 
-        document.querySelector("#sidebarUl"). 
-            appendChild(e)); 
-} 
-
 function createDate(info, n) {
     let d = document.createElement("div");
     d.id = "date";
@@ -168,7 +150,7 @@ function createAdd(n) {
 function newListItem(e) {
 
     let index = e.indexOf("-");
-    let n = e.substring(index + 1); // makes n value match its given tab.
+    let n = e.substring(index + 1); // makes n value match the active tab's input.
 
     let li = document.createElement("li");
     let input = document.getElementById("addInput-" + n).value;
@@ -241,6 +223,7 @@ function addToSidebar(n) {
     let li = document.createElement("button");
     li.classList = "tab-btn";
     li.id = n;
+    li.setAttribute("data-date", null); // make default date = null for sorting purposes
     li.innerHTML = ("Quest " + n);
 
     li.addEventListener("click", (e) => {
@@ -256,7 +239,6 @@ function addTab() {
     createAdd(n);
     createList(n);
     addToSidebar(n);
-    document.getElementById(n).setAttribute("data-date", null); // make default date = null for sorting purposes
     activateTab(n);
 }
 

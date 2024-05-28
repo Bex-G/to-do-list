@@ -1,3 +1,21 @@
+function comparator(a, b) { 
+    if (a.dataset.date < b.dataset.date) 
+        return -1; 
+    if (a.dataset.date > b.dataset.date) 
+        return 1; 
+    return 0; 
+} 
+
+function sortByDate() { 
+    var dates = 
+        document.querySelectorAll("[data-date]"); 
+    var datesArray = Array.from(dates); 
+    let sorted = datesArray.sort(comparator); 
+    sorted.forEach(e => 
+        document.querySelector("#sidebarUl"). 
+            appendChild(e)); 
+} 
+
 function activateTab(n) { 
 
     // hide all tab content, then display active tab
@@ -21,4 +39,4 @@ function activateTab(n) {
     document.getElementById(addInput).value = null;
 };
 
-export { activateTab };
+export { sortByDate, activateTab };
