@@ -110,9 +110,19 @@ textarea {
 }
 
 .list-ul li {
-    margin: 10px 0px 0px 25px;
+    margin-top: 10px;
     position: relative;
     border-radius: 5px;
+    list-style: none;
+}
+
+li input {
+    margin-right: 10px;
+}
+
+input:checked+span {
+    color: #777;
+    text-decoration: line-through;
 }
 
 .close {

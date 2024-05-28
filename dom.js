@@ -147,17 +147,28 @@ function createAdd(n) {
 
 }
 
+let counter = 0;
+
 function newListItem(e) {
 
     let index = e.indexOf("-");
     let n = e.substring(index + 1); // makes n value match the active tab's input.
+    counter++;
 
     let li = document.createElement("li");
-    let input = document.getElementById("addInput-" + n).value;
-    let t = document.createTextNode(input);
-    li.appendChild(t);
+    let liL = document.createElement("label");
+    liL.htmlFor = counter;
+    let span = document.createElement("span");
+    span.innerHTML = document.getElementById("addInput-" + n).value;
+    let checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = counter;
+    liL.appendChild(checkbox);
+    liL.appendChild(span);
+    li.appendChild(liL);
 
-    if (input !== "") {
+
+    if (span.innerHTML !== "") {
         document.getElementById("list-" + n).appendChild(li);
         document.getElementById("addInput-" + n).value = "";
         createCloseBtn(li);
