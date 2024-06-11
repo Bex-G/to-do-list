@@ -21,12 +21,12 @@ function createQuest(q) {
             dropHead.classList = "drop-head";
             let name = document.createElement("h3"); 
             name.innerHTML = quest;
-            // head.addEventListener("click", () => {
-            //     console.log(q);
-            // })
             let dropContent = document.createElement("div");
             dropContent.id = ("q" + q);
-            dropContent.classList = "drop-content";
+            dropContent.classList.add("drop-content", "show");
+            name.addEventListener("click", () => {
+                dropContent.classList.toggle("show");
+            })
             dropHead.appendChild(name);
             dropdown.appendChild(dropHead);
             dropdown.appendChild(dropContent);

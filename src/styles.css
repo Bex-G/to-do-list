@@ -31,8 +31,7 @@
 }
 
 .drop-content {
-    display: flex;
-    flex-direction: column;
+    display: none;
 }
 
 .tab-btn {
@@ -145,6 +144,11 @@ input:checked+span {
 }
 
 /* event-triggered classes */
+
+.show {
+    display: flex;
+    flex-direction: column;
+}
 
 .important {
     background-color: rgb(255, 0, 0, 0.4);
