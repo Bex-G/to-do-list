@@ -1,5 +1,5 @@
-import addTab from "../dom";
+import {addQuest} from "../dom";
 
-document.getElementById("newListBtn").addEventListener("click", (e) => {
-    addTab();
+document.getElementById("newFolderBtn").addEventListener("click", () => {
+    addQuest();
 })

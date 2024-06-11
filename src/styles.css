@@ -8,23 +8,31 @@
     display: grid;
     grid-template-columns: 1fr 4fr;
     padding: .5rem;
+    height: 100vh;
+}
+
+#logo {
+    text-align: center;
+    margin-bottom: 1rem;
 }
 
 #sidebar {
     display: flex;
     flex-direction: column;
-    margin-right: 10px;
+    padding-right: .5rem;
+    border-right: 1px dotted black;
 }
 
-#sidebarUl {
+.drop-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: .2rem 0rem;
+}
+
+.drop-content {
     display: flex;
     flex-direction: column;
-}
-
-#newListBtn {
-    padding: 1.5rem 0;
-    margin-bottom: 10px;
-    border-radius: 5px;
 }
 
 .tab-btn {
@@ -41,7 +49,6 @@
 }
 
 .list-info {
-    border-left: 1px dotted black;
     border-bottom: 1px dotted black;
 }
 
@@ -114,6 +121,7 @@ textarea {
     position: relative;
     border-radius: 5px;
     list-style: none;
+    padding: 3px 0px 3px 5px;
 }
 
 li input {
@@ -128,7 +136,12 @@ input:checked+span {
 .close {
     position: absolute;
     right: 0;
-    padding-right: 5px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
 /* event-triggered classes */
