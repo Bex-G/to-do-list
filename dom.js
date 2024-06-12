@@ -19,14 +19,22 @@ function createQuest(q) {
             let dropHead = document.createElement("div");
             dropHead.id = ("dropHead" + q);
             dropHead.classList = "drop-head";
+            let arrow =  document.createElement("p");
+            arrow.id = ("a" + q);
+            arrow.classList = "arrow";
             let name = document.createElement("h3"); 
             name.innerHTML = quest;
+            name.style.textDecoration = "underline";
             let dropContent = document.createElement("div");
             dropContent.id = ("q" + q);
             dropContent.classList.add("drop-content", "show");
-            name.addEventListener("click", () => {
+            arrow.addEventListener("click", () => {
+                if (dropContent.children.length > 0) {
                 dropContent.classList.toggle("show");
+                arrow.classList.toggle("down");
+                }
             })
+            dropHead.appendChild(arrow);
             dropHead.appendChild(name);
             dropdown.appendChild(dropHead);
             dropdown.appendChild(dropContent);
@@ -40,18 +48,21 @@ function createQuest(q) {
 
 function createBtn(q) {
     let div = document.createElement("div");
-    let btn = document.createElement("button");
+    let btn = document.createElement("p");
     btn.id = ("btn-" + q);
     btn.innerHTML = "+";
     btn.addEventListener("click", (e) => {
         let list = prompt("What do you want to name your new list?");
         if (list != null && list != "") {
             addList(q, list);
+            document.getElementById("q" + q).classList.add("show");
+            document.getElementById("a" + q).classList.add("down");
         }
     })
     div.appendChild(btn);
     document.getElementById("dropHead" + q).appendChild(div);
 }
+
 
 let l = 0; // tracks unique lists + .tab-btn id numbers
 
@@ -70,10 +81,12 @@ function addToSidebar(q, l, list) {
     li.id = l;
     li.classList.add(("q-" + q), "tab-btn");
     li.setAttribute("data-date", null); // make default date = null for sorting purposes
-    li.innerHTML = list;
+    let txt = document.createTextNode(list);
+    txt.id = ("tabTxt" + l);
     li.addEventListener("click", (e) => {
         activateTab(e.target.id); // gets correct "l" value
         });
+    li.appendChild(txt);
     div.appendChild(li);
 }
 
@@ -88,7 +101,7 @@ function createInfo(q, l, list) {
     info.classList = "list-info";
 
     createName(header, l, list);
-    createRemoveBtn(header, l);
+    createRemoveBtn(l);
     info.appendChild(header);
     createPriority(info, l);
     createDate(info, q, l);
@@ -113,25 +126,32 @@ function createName(header, l, list) {
         listName.blur();
         if (listName.textContent.length >= 12) {
             tabBtn.textContent = listName.textContent.substring(0,12) + "...";
+            createRemoveBtn(l);
         } else if (listName.textContent.length < 1) {
             tabBtn.textContent = "...";
-        } else (tabBtn.textContent = listName.textContent);
-    }  
+            createRemoveBtn(l);
+        } else {
+            tabBtn.textContent = listName.textContent;
+            createRemoveBtn(l);
+        }}  
     })
     listName.addEventListener("focusout", () => {
         if (listName.textContent.length >= 12) {
             tabBtn.textContent = listName.textContent.substring(0,12) + "...";
+            createRemoveBtn(l);
         } else if (listName.textContent.length < 1) {
             tabBtn.textContent = "...";
-        } else (tabBtn.textContent = listName.textContent);
-    })
+            createRemoveBtn(l);
+        } else {
+            tabBtn.textContent = listName.textContent;
+            createRemoveBtn(l);
+        }}  
+    )
     header.appendChild(listName); 
 }
 
-function createRemoveBtn(header, l) {
-    let r = document.createElement("div");
-    r.id = "headerR";
-    let removeBtn = document.createElement("button");
+function createRemoveBtn(l) {
+    let removeBtn = document.createElement("p");
     removeBtn.id = "removeBtn";
     let txt = document.createTextNode("\u00D7");
     removeBtn.appendChild(txt);
@@ -142,9 +162,9 @@ function createRemoveBtn(header, l) {
         document.getElementById(l).remove();
         }
     });
-    r.appendChild(removeBtn);
-    header.appendChild(r);
+    document.getElementById(l).appendChild(removeBtn);
 }
+
 
 function createPriority(info, l) {
     let p = document.createElement("div");
@@ -233,16 +253,15 @@ function newListItem(e) {
 
     let li = document.createElement("li");
     let liL = document.createElement("label");
-    liL.htmlFor = liCounter;
+    liL.htmlFor = ("li" + liCounter);
     let span = document.createElement("span");
     span.innerHTML = document.getElementById("addInput-" + l).value;
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.id = liCounter;
+    checkbox.id = ("li" + liCounter);
     liL.appendChild(checkbox);
     liL.appendChild(span);
     li.appendChild(liL);
-
 
     if (span.innerHTML !== "") {
         document.getElementById("list-" + l).appendChild(li);

@@ -30,15 +30,30 @@
     margin: .2rem 0rem;
 }
 
+.arrow {
+    border: solid black;
+    border-width: 0 1px 1px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.down {
+transform: rotate(45deg);
+-webkit-transform: rotate(45deg);
+}
+
 .drop-content {
     display: none;
 }
 
 .tab-btn {
-    padding: .5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0rem .5rem;
     border-radius: 5px;
-    white-space: nowrap;
-    overflow: hidden;
 }
 
 /* no touchie! */
