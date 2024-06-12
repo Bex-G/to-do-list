@@ -1,228 +1,222 @@
 import { sortByDate, activateTab } from "./logic";
 
 const sidebar = document.getElementById("sidebar");
-const tabContainer = document.getElementById("tabContainer");
+const listContainer = document.getElementById("listContainer");
 
-let q = 0; // tracks id numbers for quests in sidebar
+let q = 0; // tracks quest id numbers
 
 function addQuest() {
     q++
-    createQuest(q);
+    makeQuest(q);
 }
 
-function createQuest(q) {
-    let quest = prompt("What is your quest?");
-    if (quest != null && quest != "") {
-        if (quest.length <= 12) {
+function makeQuest(q) {
+    let questName = prompt("What is your quest?");
+    if (questName != null && questName != "") {
+        if (questName.length <= 12) {
             let dropdown = document.createElement("div");
             dropdown.classList = "dropdown";
-            let dropHead = document.createElement("div");
-            dropHead.id = ("dropHead" + q);
-            dropHead.classList = "drop-head";
+            let dHead = document.createElement("div");
+            dHead.id = ("dropHeader" + q);
+            dHead.classList = "drop-header";
             let arrow =  document.createElement("p");
             arrow.id = ("a" + q);
             arrow.classList = "arrow";
-            let name = document.createElement("h3"); 
-            name.innerHTML = quest;
-            name.style.textDecoration = "underline";
-            let dropContent = document.createElement("div");
-            dropContent.id = ("q" + q);
-            dropContent.classList.add("drop-content", "show");
+            let qName = document.createElement("h3"); 
+            qName.innerHTML = questName;
+            qName.style.textDecoration = "underline";
+            let dContent = document.createElement("div");
+            dContent.id = ("q" + q);
+            dContent.classList.add("drop-content", "show");
             arrow.addEventListener("click", () => {
-                if (dropContent.children.length > 0) {
-                dropContent.classList.toggle("show");
+                if (dContent.children.length > 0) {
+                dContent.classList.toggle("show");
                 arrow.classList.toggle("down");
                 }
             })
-            dropHead.appendChild(arrow);
-            dropHead.appendChild(name);
-            dropdown.appendChild(dropHead);
-            dropdown.appendChild(dropContent);
+            dHead.appendChild(arrow);
+            dHead.appendChild(qName);
+            dropdown.appendChild(dHead);
+            dropdown.appendChild(dContent);
             sidebar.appendChild(dropdown);
-            createBtn(q);
+            makePlus(q);
         } else {
             alert("Oops! Please choose a name that is fewer than 12 characters long. :)");
         }
     }
 }
 
-function createBtn(q) {
+function makePlus(q) {
     let div = document.createElement("div");
-    let btn = document.createElement("p");
-    btn.id = ("btn-" + q);
-    btn.innerHTML = "+";
-    btn.addEventListener("click", (e) => {
-        let list = prompt("What do you want to name your new list?");
-        if (list != null && list != "") {
-            addList(q, list);
+    let p = document.createElement("p");
+    p.innerHTML = "+";
+    p.addEventListener("click", (e) => {
+        let listName = prompt("What do you want to name your new list?");
+        if (listName != null && listName != "") {
+            addList(q, listName);
             document.getElementById("q" + q).classList.add("show");
             document.getElementById("a" + q).classList.add("down");
         }
     })
-    div.appendChild(btn);
-    document.getElementById("dropHead" + q).appendChild(div);
+    div.appendChild(p);
+    document.getElementById("dropHeader" + q).appendChild(div);
 }
 
+let t = 0; // tracks tab id numbers
 
-let l = 0; // tracks unique lists + .tab-btn id numbers
-
-function addList(q, list) { // gets appropriate quest number
-    l++
-    addToSidebar(q, l, list);
-    createInfo(q, l, list);
-    createAdd(l);
-    createList(l);
-    activateTab(l);
+function addList(q, listName) {
+    t++
+    makeTab(q, t, listName);
+    makeInfo(q, t, listName);
+    makeAdd(t);
+    makeList(t);
+    activateTab(t);
 }
 
-function addToSidebar(q, l, list) {
-    let div = document.getElementById("q" + q);
-    let li = document.createElement("button");
-    li.id = l;
-    li.classList.add(("q-" + q), "tab-btn");
-    li.setAttribute("data-date", null); // make default date = null for sorting purposes
-    let txt = document.createTextNode(list);
-    txt.id = ("tabTxt" + l);
-    li.addEventListener("click", (e) => {
-        activateTab(e.target.id); // gets correct "l" value
+function makeTab(q, t, listName) {
+    let activeQuest = document.getElementById("q" + q);
+    let tab = document.createElement("button");
+    tab.id = t;
+    tab.classList.add(("q-" + q), "tab-btn");
+    tab.setAttribute("data-date", null); // make default date = null for sorting purposes
+    tab.textContent = listName;
+    tab.addEventListener("click", (e) => {
+        activateTab(e.target.id); // gets correct "t" value
         });
-    li.appendChild(txt);
-    div.appendChild(li);
+    activeQuest.appendChild(tab);
 }
 
-function createInfo(q, l, list) {
-    let tabContent = document.createElement("div");
-    tabContent.id = ("tab-" + l);
-    tabContent.classList = "tab-content";
+function makeInfo(q, t, listName) {
+    let listContent = document.createElement("div");
+    listContent.id = ("t" + t);
+    listContent.classList = "list-content";
     
     let header = document.createElement("div");
-    header.classList = "tab-header";
+    header.classList = "list-header";
     let info = document.createElement("div");
     info.classList = "list-info";
 
-    createName(header, l, list);
-    createRemoveBtn(l);
+    makeName(header, t, listName);
+    makeRemoveBtn(t);
     info.appendChild(header);
-    createPriority(info, l);
-    createDate(info, q, l);
-    createNotes(info, l);
-    tabContent.appendChild(info);
-    tabContainer.appendChild(tabContent);
+    makePriority(info, t);
+    makeDate(info, q, t);
+    makeNotes(info, t);
+    listContent.appendChild(info);
+    listContainer.appendChild(listContent);
 }
 
-function createName(header, l, list) {
-    let tabBtn = document.getElementById(l);
-    if (list.length >= 12) {
-        document.getElementById(l).textContent = list.substring(0,12) + "...";
+function makeName(header, t, listName) {
+    let tabBtn = document.getElementById(t);
+    if (listName.length >= 12) {
+        document.getElementById(t).textContent = listName.substring(0,12) + "...";
     } else {
-        document.getElementById(l).textContent = list;
+        document.getElementById(t).textContent = listName;
     }
-    let listName = document.createElement("h2");    
-    listName.id = ("name" + l);
-    listName.textContent = list;
-    listName.contentEditable = "true";
-    listName.addEventListener("keydown", (e) => {
+    let listHeader = document.createElement("h2");    
+    listHeader.id = ("name" + t);
+    listHeader.textContent = listName;
+    listHeader.contentEditable = "true";
+    listHeader.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
-        listName.blur();
-        if (listName.textContent.length >= 12) {
-            tabBtn.textContent = listName.textContent.substring(0,12) + "...";
-            createRemoveBtn(l);
-        } else if (listName.textContent.length < 1) {
+        listHeader.blur();
+        if (listHeader.textContent.length >= 12) {
+            tabBtn.textContent = listHeader.textContent.substring(0,12) + "...";
+            makeRemoveBtn(t);
+        } else if (listHeader.textContent.length < 1) {
             tabBtn.textContent = "...";
-            createRemoveBtn(l);
+            makeRemoveBtn(t);
         } else {
-            tabBtn.textContent = listName.textContent;
-            createRemoveBtn(l);
+            tabBtn.textContent = listHeader.textContent;
+            makeRemoveBtn(t);
         }}  
     })
-    listName.addEventListener("focusout", () => {
-        if (listName.textContent.length >= 12) {
-            tabBtn.textContent = listName.textContent.substring(0,12) + "...";
-            createRemoveBtn(l);
-        } else if (listName.textContent.length < 1) {
+    listHeader.addEventListener("focusout", () => {
+        if (listHeader.textContent.length >= 12) {
+            tabBtn.textContent = listHeader.textContent.substring(0,12) + "...";
+            makeRemoveBtn(t);
+        } else if (listHeader.textContent.length < 1) {
             tabBtn.textContent = "...";
-            createRemoveBtn(l);
+            makeRemoveBtn(t);
         } else {
-            tabBtn.textContent = listName.textContent;
-            createRemoveBtn(l);
+            tabBtn.textContent = listHeader.textContent;
+            makeRemoveBtn(t);
         }}  
     )
-    header.appendChild(listName); 
+    header.appendChild(listHeader); 
 }
 
-function createRemoveBtn(l) {
-    let removeBtn = document.createElement("p");
-    removeBtn.id = "removeBtn";
+function makeRemoveBtn(t) {
+    let btn = document.createElement("p");
     let txt = document.createTextNode("\u00D7");
-    removeBtn.appendChild(txt);
-    removeBtn.addEventListener("click", () => {
+    btn.appendChild(txt);
+    btn.addEventListener("click", () => {
         let result = confirm("Are you sure you want to delete this list? (This can not be undone.)")
         if (result === true) {
-        document.getElementById("tab-" + l).remove();
-        document.getElementById(l).remove();
+        document.getElementById("t" + t).remove();
+        document.getElementById(t).remove();
         }
     });
-    document.getElementById(l).appendChild(removeBtn);
+    document.getElementById(t).appendChild(btn);
 }
 
-
-function createPriority(info, l) {
+function makePriority(info, t) {
     let p = document.createElement("div");
     p.id = "priority";
     let pL = document.createElement("label");
-    pL.htmlFor = ("priorityInput" + l);
+    pL.htmlFor = ("priorityInput" + t);
     pL.innerHTML = "main quest?"
     p.appendChild(pL);
     let priorityInput = document.createElement("input");
     priorityInput.type = "checkbox";
-    priorityInput.id = ("priorityInput" + l);
+    priorityInput.id = ("priorityInput" + t);
     priorityInput.addEventListener("change" , (e) => {
-        document.getElementById(l).classList.toggle("important"); // colors tab-btn
-        document.getElementById("name" + l).classList.toggle("important"); // colors name header
+        document.getElementById(t).classList.toggle("important"); // colors tab-btn
+        document.getElementById("name" + t).classList.toggle("important"); // colors name header
     });
     p.appendChild(priorityInput);
     info.appendChild(p);
 }
 
-function createDate(info, q, l) {
-    let d = document.createElement("div");
-    d.id = "date";
+function makeDate(info, q, t) {
+    let div = document.createElement("div");
+    div.id = "date";
     let dL = document.createElement("label");
-    dL.htmlFor = ("dateInput" + l);
+    dL.htmlFor = ("dateInput" + t);
     dL.innerHTML = "due by: "
-    d.appendChild(dL);
+    div.appendChild(dL);
     let dateInput = document.createElement("input");
     dateInput.type = "date";
-    dateInput.id = ("dateInput" + l);
+    dateInput.id = ("dateInput" + t);
     dateInput.addEventListener("change", () => {
-        document.getElementById(l).setAttribute("data-date", dateInput.value);
+        document.getElementById(t).setAttribute("data-date", dateInput.value);
         sortByDate(q);
     });
-    d.appendChild(dateInput);
-    info.appendChild(d);
+    div.appendChild(dateInput);
+    info.appendChild(div);
 }
 
-function createNotes(info, l) {
+function makeNotes(info, t) {
     let nb = document.createElement("div");
     nb.id = "notebook";
     let nbL = document.createElement("label");
     nbL.id = "notebookLabel";
-    nbL.htmlFor = ("notes"  + l);
+    nbL.htmlFor = ("notes"  + t);
     nbL.innerHTML = "notes:";
     let notes = document.createElement("textarea");
-    notes.id = ("notes"  + l);
+    notes.id = ("notes"  + t);
     nb.appendChild(nbL);
     nb.appendChild(notes);
     info.appendChild(nb);
 }
 
-function createAdd(l) {
-    let tabContent = document.getElementById("tab-" + l);
+function makeAdd(t) {
+    let listContent = document.getElementById("t" + t);
     let div = document.createElement("div");
     div.id = "add";
     let addInput = document.createElement("input");
     addInput.type = "text";
-    addInput.id = ("addInput-" + l);
+    addInput.id = ("addInput-" + t);
     addInput.classList = "add-input";
     addInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
@@ -234,38 +228,37 @@ function createAdd(l) {
     let addBtn = document.createElement("button");
     addBtn.type = "submit";
     addBtn.innerHTML = "add"
-    addBtn.id = ("addBtn-" + l);
+    addBtn.id = ("addBtn-" + t);
     addBtn.classList = "add-btn";
     addBtn.addEventListener("click", (e) => {
         newListItem(e.target.id);
         });
     div.appendChild(addBtn);
-    tabContent.appendChild(div);
+    listContent.appendChild(div);
 
 }
 
-let liCounter = 0; // tracks li id numbers
+let l = 0; // tracks li id numbers
 
 function newListItem(e) {
     let index = e.indexOf("-");
-    let l = e.substring(index + 1); // makes l value match the active tab's input.
-    liCounter++;
-
+    let t = e.substring(index + 1); // makes t value match the active tab's.
+    l++;
     let li = document.createElement("li");
     let liL = document.createElement("label");
-    liL.htmlFor = ("li" + liCounter);
+    liL.htmlFor = ("li" + l);
     let span = document.createElement("span");
-    span.innerHTML = document.getElementById("addInput-" + l).value;
+    span.innerHTML = document.getElementById("addInput-" + t).value;
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.id = ("li" + liCounter);
+    checkbox.id = ("li" + l);
     liL.appendChild(checkbox);
     liL.appendChild(span);
     li.appendChild(liL);
 
     if (span.innerHTML !== "") {
-        document.getElementById("list-" + l).appendChild(li);
-        document.getElementById("addInput-" + l).value = "";
+        document.getElementById("list-" + t).appendChild(li);
+        document.getElementById("addInput-" + t).value = "";
         createCloseBtn(li);
     }
 }
@@ -311,13 +304,13 @@ for (i = 0; i < close.length; i++) {
     }
 }
 
-function createList(l) {
-    let tabContent = document.getElementById("tab-" + l);
+function makeList(t) {
+    let listContent = document.getElementById("t" + t);
     let ul = document.createElement("ul");
-    ul.id = ("list-" + l)
+    ul.id = ("list-" + t)
     ul.classList = "list-ul";
-    tabContent.appendChild(ul);
-    tabContainer.appendChild(tabContent);
+    listContent.appendChild(ul);
+    listContainer.appendChild(listContent);
 }
 
 export { addQuest };

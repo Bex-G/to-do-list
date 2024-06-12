@@ -23,7 +23,7 @@
     border-right: 1px dotted black;
 }
 
-.drop-head {
+.drop-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -58,7 +58,7 @@ transform: rotate(45deg);
 
 /* no touchie! */
 
-.tab-content {
+.list-content {
     display: none;
 }
 
@@ -66,24 +66,10 @@ transform: rotate(45deg);
     border-bottom: 1px dotted black;
 }
 
-.tab-header {
+.list-header {
     text-align: center;
-    position: relative;
-}
-
-.tab-header h1 {
     border-radius: 0px 5px 5px 0px;
     padding: 5px;
-}
-
-#headerR {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-#removeBtn {
-    padding: 2px;
 }
 
 #priority {
