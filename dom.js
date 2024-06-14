@@ -23,15 +23,15 @@ function makeQuest(q) {
             arrow.id = ("a" + q);
             arrow.classList = "arrow";
             let qName = document.createElement("h3"); 
-            qName.innerHTML = questName;
+            qName.textContent = questName;
             qName.style.textDecoration = "underline";
             let dContent = document.createElement("div");
             dContent.id = ("q" + q);
             dContent.classList.add("drop-content", "show");
             arrow.addEventListener("click", () => {
                 if (dContent.children.length > 0) {
-                dContent.classList.toggle("show");
-                arrow.classList.toggle("down");
+                    dContent.classList.toggle("show");
+                    arrow.classList.toggle("down");
                 }
             })
             dHead.appendChild(arrow);
@@ -49,15 +49,15 @@ function makeQuest(q) {
 function makePlus(q) {
     let div = document.createElement("div");
     let p = document.createElement("p");
-    p.innerHTML = "+";
+    p.textContent = "+";
     p.addEventListener("click", () => {
         let listName = prompt("What do you want to name your new list?");
         if (listName != null && listName != "") {
             addList(q, listName);
             document.getElementById("q" + q).classList.add("show");
             document.getElementById("a" + q).classList.add("down");
-        }
-    })
+
+        }})
     div.appendChild(p);
     document.getElementById("dropHeader" + q).appendChild(div);
 }
@@ -97,7 +97,7 @@ function makeInfo(q, t, listName) {
     info.classList = "list-info";
 
     makeName(header, t, listName);
-    makeRemoveBtn(t);
+    makeRemoveBtn(q, t);
     info.appendChild(header);
     makePriority(info, t);
     makeDate(info, q, t);
@@ -118,16 +118,16 @@ function makeName(header, t, listName) {
     listHeader.textContent = listName;
     listHeader.contentEditable = "true";
     listHeader.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-        listHeader.blur();
-        if (listHeader.textContent.length >= 12) {
-            tabBtn.textContent = listHeader.textContent.substring(0,12) + "...";
-        } else if (listHeader.textContent.length < 1) {
-            tabBtn.textContent = "...";
-        } else {
-            tabBtn.textContent = listHeader.textContent;
-        }}  
-    })
+        if (e.key === "Enter") {
+            listHeader.blur();
+            if (listHeader.textContent.length >= 12) {
+                tabBtn.textContent = listHeader.textContent.substring(0,12) + "...";
+            } else if (listHeader.textContent.length < 1) {
+                tabBtn.textContent = "...";
+            } else {
+                tabBtn.textContent = listHeader.textContent;
+            }}  
+        })
     listHeader.addEventListener("focusout", () => {
         if (listHeader.textContent.length >= 12) {
             tabBtn.textContent = listHeader.textContent.substring(0,12) + "...";
@@ -138,20 +138,24 @@ function makeName(header, t, listName) {
         }}  
     )
     tabBtn.addEventListener("click", () => {
-    activateTab(t);
+        activateTab(t);
     });
     header.appendChild(listHeader); 
 }
 
-function makeRemoveBtn(t) {
+function makeRemoveBtn(q, t) {
     let btn = document.createElement("p");
     let txt = document.createTextNode("\u00D7");
     btn.appendChild(txt);
     btn.addEventListener("click", () => {
         let result = confirm("Are you sure you want to delete this list? (This can not be undone.)")
         if (result === true) {
-        document.getElementById("t" + t).remove();
-        document.getElementById(t).remove();
+            document.getElementById("t" + t).remove();
+            document.getElementById(t).remove();
+        }
+    let dContent = document.getElementById("q" + q);
+        if (dContent.children.length < 1) {
+            document.getElementById("a" + q).classList.remove("down");
         }
     });
     document.getElementById(t).appendChild(btn);
@@ -162,7 +166,7 @@ function makePriority(info, t) {
     p.id = "priority";
     let pL = document.createElement("label");
     pL.htmlFor = ("priorityInput" + t);
-    pL.innerHTML = "main quest?"
+    pL.textContent = "main quest?"
     p.appendChild(pL);
     let priorityInput = document.createElement("input");
     priorityInput.type = "checkbox";
@@ -180,7 +184,7 @@ function makeDate(info, q, t) {
     div.id = "date";
     let dL = document.createElement("label");
     dL.htmlFor = ("dateInput" + t);
-    dL.innerHTML = "due by: "
+    dL.textContent = "due by: "
     div.appendChild(dL);
     let dateInput = document.createElement("input");
     dateInput.type = "date";
@@ -199,7 +203,7 @@ function makeNotes(info, t) {
     let nbL = document.createElement("label");
     nbL.id = "notebookLabel";
     nbL.htmlFor = ("notes"  + t);
-    nbL.innerHTML = "notes:";
+    nbL.textContent = "notes:";
     let notes = document.createElement("textarea");
     notes.id = ("notes"  + t);
     nb.appendChild(nbL);
@@ -224,7 +228,7 @@ function makeAdd(t) {
 
     let addBtn = document.createElement("button");
     addBtn.type = "submit";
-    addBtn.innerHTML = "add"
+    addBtn.textContent = "add"
     addBtn.id = ("addBtn-" + t);
     addBtn.classList = "add-btn";
     addBtn.addEventListener("click", () => {
@@ -242,7 +246,7 @@ function newListItem(t) {
     let liL = document.createElement("label");
     liL.htmlFor = ("li" + l);
     let span = document.createElement("span");
-    span.innerHTML = document.getElementById("addInput-" + t).value;
+    span.textContent = document.getElementById("addInput-" + t).value;
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.id = ("li" + l);
@@ -250,7 +254,7 @@ function newListItem(t) {
     liL.appendChild(span);
     li.appendChild(liL);
 
-    if (span.innerHTML !== "") {
+    if (span.textContent !== "") {
         document.getElementById("list-" + t).appendChild(li);
         document.getElementById("addInput-" + t).value = "";
         createCloseBtn(li);
