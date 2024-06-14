@@ -25,6 +25,27 @@ function makeQuest(q) {
             let qName = document.createElement("h3"); 
             qName.textContent = questName;
             qName.style.textDecoration = "underline";
+            qName.contentEditable = "true";
+            let maxLength = 12; 
+            let minLength = 1;
+            qName.addEventListener("keydown", (e) => { 
+                let textLength = qName.textContent.length; 
+                if (textLength >= maxLength && e.key !== "Backspace") { 
+                    alert("Character limit exceeded!");
+                    qName.blur(); 
+                } else if (textLength === (minLength) && e.key === "Backspace") {
+                    alert("This must be at least 1 character long.")
+                    qName.blur();
+                }
+                if (e.key === "Enter") {
+                    qName.blur();
+                }
+            })
+            qName.addEventListener("focusout", (e) => { 
+                if (qName.textContent.length < 1) {
+                    qName.textContent = "untitled";
+                }
+            })
             let dContent = document.createElement("div");
             dContent.id = ("q" + q);
             dContent.classList.add("drop-content", "show");
@@ -53,11 +74,15 @@ function makePlus(q) {
     p.addEventListener("click", () => {
         let listName = prompt("What do you want to name your new list?");
         if (listName != null && listName != "") {
-            addList(q, listName);
-            document.getElementById("q" + q).classList.add("show");
-            document.getElementById("a" + q).classList.add("down");
-
-        }})
+            if (listName.length <= 26) {
+                addList(q, listName);
+                document.getElementById("q" + q).classList.add("show");
+                document.getElementById("a" + q).classList.add("down");
+            } else {
+                alert("Oops! Please choose a name that is fewer than 26 characters long. :)");
+            }
+        }
+    })
     div.appendChild(p);
     document.getElementById("dropHeader" + q).appendChild(div);
 }
@@ -123,20 +148,31 @@ function makeName(header, t, listName) {
             if (listHeader.textContent.length >= 12) {
                 tabBtn.textContent = listHeader.textContent.substring(0,12) + "...";
             } else if (listHeader.textContent.length < 1) {
-                tabBtn.textContent = "...";
+                listHeader.textContent = "untitled";
+                tabBtn.textContent = "untitled";
             } else {
                 tabBtn.textContent = listHeader.textContent;
-            }}  
-        })
+            }
+        }
+    })
     listHeader.addEventListener("focusout", () => {
         if (listHeader.textContent.length >= 12) {
             tabBtn.textContent = listHeader.textContent.substring(0,12) + "...";
         } else if (listHeader.textContent.length < 1) {
-            tabBtn.textContent = "...";
+            listHeader.textContent = "untitled";
+            tabBtn.textContent = "untitled";
         } else {
             tabBtn.textContent = listHeader.textContent;
-        }}  
-    )
+        }
+    })
+    let maxLength = 26; 
+    listHeader.addEventListener("keydown", (e) => { 
+        let textLength = listHeader.textContent.length; 
+        if (textLength >= maxLength && e.key !== "Backspace") { 
+            alert("Character limit exceeded!"); 
+            listHeader.blur();
+        }
+    }); 
     tabBtn.addEventListener("click", () => {
         activateTab(t);
     });
