@@ -3,7 +3,7 @@ import { sortByDate, activateTab } from "./logic";
 const sidebar = document.getElementById("sidebar");
 const listContainer = document.getElementById("listContainer");
 
-let q = 0; // tracks quest id numbers
+let q = 0; // tracks quest (sidebar header) id numbers
 
 function addQuest() {
     q++
@@ -50,7 +50,7 @@ function makePlus(q) {
     let div = document.createElement("div");
     let p = document.createElement("p");
     p.innerHTML = "+";
-    p.addEventListener("click", (e) => {
+    p.addEventListener("click", () => {
         let listName = prompt("What do you want to name your new list?");
         if (listName != null && listName != "") {
             addList(q, listName);
@@ -66,23 +66,23 @@ let t = 0; // tracks tab id numbers
 
 function addList(q, listName) {
     t++
-    makeTab(q, t, listName);
+    makeTab(q, t);
     makeInfo(q, t, listName);
     makeAdd(t);
     makeList(t);
     activateTab(t);
 }
 
-function makeTab(q, t, listName) {
+function makeTab(q, t) {
     let activeQuest = document.getElementById("q" + q);
-    let tab = document.createElement("button");
+    let tab = document.createElement("div");
     tab.id = t;
-    tab.classList.add(("q-" + q), "tab-btn");
+    tab.classList.add(("q-" + q), "tab");
     tab.setAttribute("data-date", null); // make default date = null for sorting purposes
-    tab.textContent = listName;
-    tab.addEventListener("click", (e) => {
-        activateTab(e.target.id); // gets correct "t" value
-        });
+    let tabBtn = document.createElement("p"); // leave empty for now... fill with listName value in makeName();
+    tabBtn.id = ("tb" + t);
+    tabBtn.classList = "tab-btn";
+    tab.appendChild(tabBtn);
     activeQuest.appendChild(tab);
 }
 
@@ -107,11 +107,11 @@ function makeInfo(q, t, listName) {
 }
 
 function makeName(header, t, listName) {
-    let tabBtn = document.getElementById(t);
+    let tabBtn = document.getElementById("tb" + t);
     if (listName.length >= 12) {
-        document.getElementById(t).textContent = listName.substring(0,12) + "...";
+        tabBtn.textContent = listName.substring(0,12) + "...";
     } else {
-        document.getElementById(t).textContent = listName;
+        tabBtn.textContent = listName;
     }
     let listHeader = document.createElement("h2");    
     listHeader.id = ("name" + t);
@@ -122,27 +122,24 @@ function makeName(header, t, listName) {
         listHeader.blur();
         if (listHeader.textContent.length >= 12) {
             tabBtn.textContent = listHeader.textContent.substring(0,12) + "...";
-            makeRemoveBtn(t);
         } else if (listHeader.textContent.length < 1) {
             tabBtn.textContent = "...";
-            makeRemoveBtn(t);
         } else {
             tabBtn.textContent = listHeader.textContent;
-            makeRemoveBtn(t);
         }}  
     })
     listHeader.addEventListener("focusout", () => {
         if (listHeader.textContent.length >= 12) {
             tabBtn.textContent = listHeader.textContent.substring(0,12) + "...";
-            makeRemoveBtn(t);
         } else if (listHeader.textContent.length < 1) {
             tabBtn.textContent = "...";
-            makeRemoveBtn(t);
         } else {
             tabBtn.textContent = listHeader.textContent;
-            makeRemoveBtn(t);
         }}  
     )
+    tabBtn.addEventListener("click", () => {
+    activateTab(t);
+    });
     header.appendChild(listHeader); 
 }
 
@@ -170,7 +167,7 @@ function makePriority(info, t) {
     let priorityInput = document.createElement("input");
     priorityInput.type = "checkbox";
     priorityInput.id = ("priorityInput" + t);
-    priorityInput.addEventListener("change" , (e) => {
+    priorityInput.addEventListener("change" , () => {
         document.getElementById(t).classList.toggle("important"); // colors tab-btn
         document.getElementById("name" + t).classList.toggle("important"); // colors name header
     });
@@ -220,7 +217,7 @@ function makeAdd(t) {
     addInput.classList = "add-input";
     addInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
-            newListItem(e.target.id);
+            newListItem(t);
         }
     });
     div.appendChild(addInput);
@@ -230,19 +227,16 @@ function makeAdd(t) {
     addBtn.innerHTML = "add"
     addBtn.id = ("addBtn-" + t);
     addBtn.classList = "add-btn";
-    addBtn.addEventListener("click", (e) => {
-        newListItem(e.target.id);
+    addBtn.addEventListener("click", () => {
+        newListItem(t);
         });
     div.appendChild(addBtn);
     listContent.appendChild(div);
-
 }
 
 let l = 0; // tracks li id numbers
 
-function newListItem(e) {
-    let index = e.indexOf("-");
-    let t = e.substring(index + 1); // makes t value match the active tab's.
+function newListItem(t) {
     l++;
     let li = document.createElement("li");
     let liL = document.createElement("label");

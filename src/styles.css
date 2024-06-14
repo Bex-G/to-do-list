@@ -48,12 +48,17 @@ transform: rotate(45deg);
     display: none;
 }
 
-.tab-btn {
+.tab {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0rem .5rem;
     border-radius: 5px;
+}
+
+.tab-btn {
+    width: 90%;
+    text-align: center;
 }
 
 /* no touchie! */

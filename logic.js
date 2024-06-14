@@ -27,7 +27,7 @@ function activateTab(t) {
     document.getElementById("t" + t).style.display = "block";
 
     // remove ".active" from all tabs, then make tab t "active"
-    let els = document.querySelectorAll(".tab-btn");
+    let els = document.querySelectorAll(".tab");
     var i;
     for (i = 0; i < els.length; i++) {
         els[i].classList.remove("active")
