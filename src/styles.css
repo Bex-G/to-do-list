@@ -27,11 +27,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: .2rem 0rem;
-}
-
-.drop-header h3 {
-    padding: 5px;
+    margin: 1rem 0rem 0rem 0rem;
+    padding: 0rem .5rem;
+    border-bottom: 1px solid black;
 }
 
 .arrow {
@@ -44,8 +42,17 @@
 }
 
 .down {
-transform: rotate(45deg);
--webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+.drop-header h3 {
+    padding: 0rem .2rem;
+}
+
+.x-action {
+    display: none;
+    color: red;
 }
 
 .drop-content {
@@ -62,7 +69,6 @@ transform: rotate(45deg);
 
 .tab-btn {
     width: 90%;
-    text-align: center;
 }
 
 /* no touchie! */
@@ -157,6 +163,11 @@ input:checked+span {
 .show {
     display: flex;
     flex-direction: column;
+}
+
+.warning {
+    background-color: rgb(255, 0, 0, 0.4);
+    border-radius: 5px;
 }
 
 .important {

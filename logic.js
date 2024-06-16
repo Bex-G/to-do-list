@@ -1,3 +1,53 @@
+function removeQuest() {
+    if (rmQuestBtn.textContent === " - Quests") {
+        actionOn();
+      } else {
+        actionOff();
+      }
+}
+
+function actionOn() {
+    let x = document.querySelectorAll(".x-action");
+    var i;
+    for (i = 0; i < x.length; i++) {
+        x[i].classList.add("show")
+    }
+    let plus = document.querySelectorAll(".plus");
+    var i;
+    for (i = 0; i < plus.length; i++) {
+        plus[i].style.display = "none";
+    }
+    let remove = document.querySelectorAll(".remove-tab");
+    var i;
+    for (i = 0; i < remove.length; i++) {
+        remove[i].style.display = "none";
+    }
+    rmQuestBtn.style.backgroundColor = "red";
+    rmQuestBtn.style.color = "white";
+    rmQuestBtn.textContent = "Finish";
+}
+
+function actionOff() {
+    rmQuestBtn.textContent = " - Quests";
+    let x = document.querySelectorAll(".x-action");
+    var i;
+    for (i = 0; i < x.length; i++) {
+        x[i].classList.remove("show")
+    }
+    let plus = document.querySelectorAll(".plus");
+    var i;
+    for (i = 0; i < plus.length; i++) {
+        plus[i].style.display = "flex";
+    }
+    let remove = document.querySelectorAll(".remove-tab");
+    var i;
+    for (i = 0; i < remove.length; i++) {
+        remove[i].style.display = "flex";
+    }
+    rmQuestBtn.style.backgroundColor = "transparent";
+    rmQuestBtn.style.color = "black";
+}
+
 function comparator(a, b) { 
     if (a.dataset.date < b.dataset.date) 
         return -1; 
@@ -39,4 +89,4 @@ function activateTab(t) {
     document.getElementById(addInput).value = null;
 };
 
-export { sortByDate, activateTab };
+export { removeQuest, actionOff, sortByDate, activateTab };

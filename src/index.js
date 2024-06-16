@@ -1,9 +1,12 @@
-import { addQuest, removeQuest } from "../dom";
+import { addQuest } from "../dom";
+import { removeQuest } from "../logic";
 
 document.getElementById("addQuestBtn").addEventListener("click", () => {
     addQuest();
 })
 
 document.getElementById("rmQuestBtn").addEventListener("click", () => {
-    removeQuest();
+    if (sidebar.children.length > 2) {
+        removeQuest();
+    }
 })

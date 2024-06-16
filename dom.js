@@ -1,11 +1,22 @@
-import { sortByDate, activateTab } from "./logic";
+import { actionOff, sortByDate, activateTab } from "./logic";
 
 const sidebar = document.getElementById("sidebar");
 const listContainer = document.getElementById("listContainer");
+const rmQuestBtn = document.getElementById("rmQuestBtn");
+rmQuestBtn.textContent = " - Quests";
+
+// QUEST BUILDER
 
 let q = 0; // tracks quest (sidebar header) id numbers
 
 function addQuest() {
+    let x = document.querySelectorAll(".x-action");
+    var i;
+    for (i = 0; i < x.length; i++) {
+        if (x[i].classList.contains("show")) {
+            actionOff(document.getElementById("rmQuestBtn"));
+        }
+    }
     let questName = prompt("What is your quest?");
         if (questName != null && questName != "") {
             if (questName.length <= 12) {
@@ -14,6 +25,7 @@ function addQuest() {
                 makeArrow(q);
                 makeQName(questName);
                 makePlus(q);
+                makeX(q);
             } else {
                 alert("Oops! Please choose a name that is fewer than 12 characters long. :)");
             }
@@ -22,6 +34,7 @@ function addQuest() {
 
 function makeDropdown(q) {
     let dropdown = document.createElement("div");
+    dropdown.id = ("d" + q);
     dropdown.classList = "dropdown";
     let dHead = document.createElement("div");
     dHead.id = ("dHead" + q);
@@ -51,7 +64,6 @@ function makeArrow(q) {
 function makeQName(questName) {
     let qName = document.createElement("h3"); 
     qName.textContent = questName;
-    qName.style.textDecoration = "underline";
     qName.contentEditable = "true";
     let maxLength = 12; 
     let minLength = 1;
@@ -78,7 +90,9 @@ function makeQName(questName) {
 
 function makePlus(q) {
     let div = document.createElement("div");
+    div.id = ("action" + q);
     let p = document.createElement("p");
+    p.classList = "plus";
     p.textContent = "+";
     p.addEventListener("click", () => {
     let listName = prompt("What do you want to name your new list?");
@@ -95,6 +109,31 @@ function makePlus(q) {
     div.appendChild(p);
     document.getElementById("dHead" + q).appendChild(div);
 }
+
+function makeX(q) { // hidden until btn event toggles display
+    let p = document.createElement("p");
+    p.classList = "x-action";
+    p.textContent = "X";
+    p.addEventListener("click", () => {
+        let result = confirm("Are you sure you want to delete this quest and all its content? (This can not be undone.)")
+        if (result === true) {
+            document.getElementById("d" + q).remove();
+        }
+        if (sidebar.children.length === 2) {
+            actionOff();
+        }
+    })
+    let dropdown = document.getElementById("d" + q);
+    p.addEventListener("mouseover", () => {
+        dropdown.classList.toggle("warning");
+    })
+    p.addEventListener("mouseout", () => {
+        dropdown.classList.toggle("warning");
+    })
+    document.getElementById("action" + q).appendChild(p);
+}
+
+ // TAB + LIST BUILDER
 
 let t = 0; // tracks tab id numbers
 
@@ -172,15 +211,16 @@ function makeLName(header, t, listName) {
             alert("Character limit exceeded!"); 
             listHeader.blur();
         }
-    }); 
+    })
     tabBtn.addEventListener("click", () => {
         activateTab(t);
-    });
+    })
     header.appendChild(listHeader); 
 }
 
 function makeRemoveBtn(q, t) {
     let btn = document.createElement("p");
+    btn.classList = "remove-tab";
     let txt = document.createTextNode("\u00D7");
     btn.appendChild(txt);
     btn.addEventListener("click", () => {
@@ -193,7 +233,7 @@ function makeRemoveBtn(q, t) {
         if (dContent.children.length < 1) {
             document.getElementById("a" + q).classList.remove("down");
         }
-    });
+    })
     document.getElementById(t).appendChild(btn);
 }
 
@@ -210,7 +250,7 @@ function makePriority(info, t) {
     priorityInput.addEventListener("change" , () => {
         document.getElementById(t).classList.toggle("important"); // colors tab-btn
         document.getElementById("name" + t).classList.toggle("important"); // colors name header
-    });
+    })
     p.appendChild(priorityInput);
     info.appendChild(p);
 }
@@ -228,7 +268,7 @@ function makeDate(info, q, t) {
     dateInput.addEventListener("change", () => {
         document.getElementById(t).setAttribute("data-date", dateInput.value);
         sortByDate(q);
-    });
+    })
     div.appendChild(dateInput);
     info.appendChild(div);
 }
@@ -269,10 +309,12 @@ function makeAdd(t) {
     addBtn.classList = "add-btn";
     addBtn.addEventListener("click", () => {
         newListItem(t);
-        });
+        })
     div.appendChild(addBtn);
     listContent.appendChild(div);
 }
+
+// LIST ITEM BUILDER
 
 let l = 0; // tracks li id numbers
 
@@ -304,10 +346,10 @@ function createCloseBtn(li) {
     span.appendChild(txt);
     span.addEventListener("mouseover", () => {
         li.classList.toggle("hover");
-    });
+    })
     span.addEventListener("mouseout", () => {
         li.classList.toggle("hover");
-    });
+    })
     li.appendChild(span);
 
     for (i = 0; i < close.length; i++) {
@@ -347,8 +389,4 @@ function makeList(t) {
     listContainer.appendChild(listContent);
 }
 
-function removeQuest() {
-    console.log("click me");
-}
-
-export { addQuest, removeQuest};
+export { addQuest };
