@@ -6,65 +6,66 @@ const listContainer = document.getElementById("listContainer");
 let q = 0; // tracks quest (sidebar header) id numbers
 
 function addQuest() {
-    q++
-    makeQuest(q);
-}
-
-function makeQuest(q) {
     let questName = prompt("What is your quest?");
     if (questName != null && questName != "") {
         if (questName.length <= 12) {
-            let dropdown = document.createElement("div");
-            dropdown.classList = "dropdown";
-            let dHead = document.createElement("div");
-            dHead.id = ("dropHeader" + q);
-            dHead.classList = "drop-header";
-            let arrow =  document.createElement("p");
-            arrow.id = ("a" + q);
-            arrow.classList = "arrow";
-            let qName = document.createElement("h3"); 
-            qName.textContent = questName;
-            qName.style.textDecoration = "underline";
-            qName.contentEditable = "true";
-            let maxLength = 12; 
-            let minLength = 1;
-            qName.addEventListener("keydown", (e) => { 
-                let textLength = qName.textContent.length; 
-                if (textLength >= maxLength && e.key !== "Backspace") { 
-                    alert("Character limit exceeded!");
-                    qName.blur(); 
-                } else if (textLength === (minLength) && e.key === "Backspace") {
-                    alert("This must be at least 1 character long.")
-                    qName.blur();
-                }
-                if (e.key === "Enter") {
-                    qName.blur();
-                }
-            })
-            qName.addEventListener("focusout", (e) => { 
-                if (qName.textContent.length < 1) {
-                    qName.textContent = "untitled";
-                }
-            })
-            let dContent = document.createElement("div");
-            dContent.id = ("q" + q);
-            dContent.classList.add("drop-content", "show");
-            arrow.addEventListener("click", () => {
-                if (dContent.children.length > 0) {
-                    dContent.classList.toggle("show");
-                    arrow.classList.toggle("down");
-                }
-            })
-            dHead.appendChild(arrow);
-            dHead.appendChild(qName);
-            dropdown.appendChild(dHead);
-            dropdown.appendChild(dContent);
-            sidebar.appendChild(dropdown);
+            q++
+            makeQuest(q, questName);
             makePlus(q);
         } else {
             alert("Oops! Please choose a name that is fewer than 12 characters long. :)");
         }
     }
+}
+
+function makeQuest(q, questName) {
+    let dropdown = document.createElement("div");
+    dropdown.classList = "dropdown";
+    let dHead = document.createElement("div");
+    dHead.id = ("dHead" + q);
+    dHead.classList = "drop-header";
+    let arrow =  document.createElement("p");
+    arrow.id = ("a" + q);
+    arrow.classList = "arrow";
+    arrow.addEventListener("click", () => {
+        if (dContent.children.length > 0) {
+            dContent.classList.toggle("show");
+            arrow.classList.toggle("down");
+        }
+    })
+    let qName = document.createElement("h3"); 
+    qName.textContent = questName;
+    qName.style.textDecoration = "underline";
+    qName.contentEditable = "true";
+    let maxLength = 12; 
+    let minLength = 1;
+    qName.addEventListener("keydown", (e) => { 
+        let textLength = qName.textContent.length; 
+        if (textLength >= maxLength && e.key !== "Backspace") { 
+            alert("Character limit exceeded!");
+            qName.blur(); 
+        } else if (textLength === (minLength) && e.key === "Backspace") {
+            alert("This must be at least 1 character long.")
+            qName.blur();
+        }
+        if (e.key === "Enter") {
+            qName.blur();
+        }
+    })
+    qName.addEventListener("focusout", (e) => { 
+        if (qName.textContent.length < 1) {
+            qName.textContent = "untitled";
+        }
+    })
+    let dContent = document.createElement("div");
+    dContent.id = ("q" + q);
+    dContent.classList.add("drop-content", "show");
+
+    dHead.appendChild(arrow);
+    dHead.appendChild(qName);
+    dropdown.appendChild(dHead);
+    dropdown.appendChild(dContent);
+    sidebar.appendChild(dropdown);
 }
 
 function makePlus(q) {
@@ -84,7 +85,7 @@ function makePlus(q) {
         }
     })
     div.appendChild(p);
-    document.getElementById("dropHeader" + q).appendChild(div);
+    document.getElementById("dHead" + q).appendChild(div);
 }
 
 let t = 0; // tracks tab id numbers
@@ -145,14 +146,6 @@ function makeName(header, t, listName) {
     listHeader.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
             listHeader.blur();
-            if (listHeader.textContent.length >= 12) {
-                tabBtn.textContent = listHeader.textContent.substring(0,12) + "...";
-            } else if (listHeader.textContent.length < 1) {
-                listHeader.textContent = "untitled";
-                tabBtn.textContent = "untitled";
-            } else {
-                tabBtn.textContent = listHeader.textContent;
-            }
         }
     })
     listHeader.addEventListener("focusout", () => {
