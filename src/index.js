@@ -1,5 +1,9 @@
-import {addQuest} from "../dom";
+import { addQuest, removeQuest } from "../dom";
 
-document.getElementById("newFolderBtn").addEventListener("click", () => {
+document.getElementById("addQuestBtn").addEventListener("click", () => {
     addQuest();
+})
+
+document.getElementById("rmQuestBtn").addEventListener("click", () => {
+    removeQuest();
 })

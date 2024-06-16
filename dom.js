@@ -7,32 +7,48 @@ let q = 0; // tracks quest (sidebar header) id numbers
 
 function addQuest() {
     let questName = prompt("What is your quest?");
-    if (questName != null && questName != "") {
-        if (questName.length <= 12) {
-            q++
-            makeQuest(q, questName);
-            makePlus(q);
-        } else {
-            alert("Oops! Please choose a name that is fewer than 12 characters long. :)");
+        if (questName != null && questName != "") {
+            if (questName.length <= 12) {
+                q++
+                makeDropdown(q);
+                makeArrow(q);
+                makeQName(questName);
+                makePlus(q);
+            } else {
+                alert("Oops! Please choose a name that is fewer than 12 characters long. :)");
+            }
         }
-    }
 }
 
-function makeQuest(q, questName) {
+function makeDropdown(q) {
     let dropdown = document.createElement("div");
     dropdown.classList = "dropdown";
     let dHead = document.createElement("div");
     dHead.id = ("dHead" + q);
     dHead.classList = "drop-header";
-    let arrow =  document.createElement("p");
+    let dContent = document.createElement("div");
+    dContent.id = ("q" + q);
+    dContent.classList.add("drop-content", "show");
+    dropdown.appendChild(dHead);
+    dropdown.appendChild(dContent);
+    sidebar.appendChild(dropdown);
+}
+
+function makeArrow(q) {
+    let arrow =  document.createElement("p")
     arrow.id = ("a" + q);
     arrow.classList = "arrow";
     arrow.addEventListener("click", () => {
+    let dContent = document.getElementById("q" + q);
         if (dContent.children.length > 0) {
             dContent.classList.toggle("show");
             arrow.classList.toggle("down");
         }
     })
+    document.getElementById("dHead" + q).appendChild(arrow);
+}
+
+function makeQName(questName) {
     let qName = document.createElement("h3"); 
     qName.textContent = questName;
     qName.style.textDecoration = "underline";
@@ -57,15 +73,7 @@ function makeQuest(q, questName) {
             qName.textContent = "untitled";
         }
     })
-    let dContent = document.createElement("div");
-    dContent.id = ("q" + q);
-    dContent.classList.add("drop-content", "show");
-
-    dHead.appendChild(arrow);
-    dHead.appendChild(qName);
-    dropdown.appendChild(dHead);
-    dropdown.appendChild(dContent);
-    sidebar.appendChild(dropdown);
+    document.getElementById("dHead" + q).appendChild(qName);
 }
 
 function makePlus(q) {
@@ -73,7 +81,7 @@ function makePlus(q) {
     let p = document.createElement("p");
     p.textContent = "+";
     p.addEventListener("click", () => {
-        let listName = prompt("What do you want to name your new list?");
+    let listName = prompt("What do you want to name your new list?");
         if (listName != null && listName != "") {
             if (listName.length <= 26) {
                 addList(q, listName);
@@ -105,7 +113,7 @@ function makeTab(q, t) {
     tab.id = t;
     tab.classList.add(("q-" + q), "tab");
     tab.setAttribute("data-date", null); // make default date = null for sorting purposes
-    let tabBtn = document.createElement("p"); // leave empty for now... fill with listName value in makeName();
+    let tabBtn = document.createElement("p"); // leave empty for now... fill with listName value in makeLName();
     tabBtn.id = ("tb" + t);
     tabBtn.classList = "tab-btn";
     tab.appendChild(tabBtn);
@@ -116,13 +124,12 @@ function makeInfo(q, t, listName) {
     let listContent = document.createElement("div");
     listContent.id = ("t" + t);
     listContent.classList = "list-content";
-    
     let header = document.createElement("div");
     header.classList = "list-header";
     let info = document.createElement("div");
     info.classList = "list-info";
 
-    makeName(header, t, listName);
+    makeLName(header, t, listName);
     makeRemoveBtn(q, t);
     info.appendChild(header);
     makePriority(info, t);
@@ -132,13 +139,13 @@ function makeInfo(q, t, listName) {
     listContainer.appendChild(listContent);
 }
 
-function makeName(header, t, listName) {
+function makeLName(header, t, listName) {
     let tabBtn = document.getElementById("tb" + t);
-    if (listName.length >= 12) {
-        tabBtn.textContent = listName.substring(0,12) + "...";
-    } else {
-        tabBtn.textContent = listName;
-    }
+        if (listName.length >= 12) {
+            tabBtn.textContent = listName.substring(0,12) + "...";
+        } else {
+            tabBtn.textContent = listName;
+        }
     let listHeader = document.createElement("h2");    
     listHeader.id = ("name" + t);
     listHeader.textContent = listName;
@@ -177,7 +184,7 @@ function makeRemoveBtn(q, t) {
     let txt = document.createTextNode("\u00D7");
     btn.appendChild(txt);
     btn.addEventListener("click", () => {
-        let result = confirm("Are you sure you want to delete this list? (This can not be undone.)")
+    let result = confirm("Are you sure you want to delete this list? (This can not be undone.)")
         if (result === true) {
             document.getElementById("t" + t).remove();
             document.getElementById(t).remove();
@@ -252,7 +259,7 @@ function makeAdd(t) {
         if (e.key === "Enter") {
             newListItem(t);
         }
-    });
+    })
     div.appendChild(addInput);
 
     let addBtn = document.createElement("button");
@@ -340,4 +347,8 @@ function makeList(t) {
     listContainer.appendChild(listContent);
 }
 
-export { addQuest };
+function removeQuest() {
+    console.log("click me");
+}
+
+export { addQuest, removeQuest};
