@@ -1,4 +1,34 @@
-function removeQuest() {
+class Quest {
+    constructor(q, name) {
+        this.id = q;
+        this._name = name;
+    }
+        get name() {
+        return this._name;
+    }
+        set name(updatedName) {
+        this._name = updatedName;
+    }
+}
+
+class Tab {
+    constructor(t, q, name, priority, date, notes) { // everything but name and id are added after initialization
+        this.id = t;
+        this.quest = q;
+        this._name = name;
+        this.priority = priority;
+        this.date = date,
+        this.notes = notes;
+    }
+        get name() {
+        return this._name;
+    }
+        set name(updatedName) {
+        this._name = updatedName;
+    }
+}
+
+function removeQuest() { // toggles display and enables user to delete quests
     if (rmQuestBtn.textContent === " - Quests") {
         actionOn();
       } else {
@@ -48,7 +78,33 @@ function actionOff() {
     rmQuestBtn.style.color = "black";
 }
 
-function comparator(a, b) { 
+function removeActiveTab(quest) { // removes any active tabs from tabContainer display when quests are deleted
+    var classes = []; 
+    var children = document.getElementById("q" + quest.id).children;
+    for (var i = 0, len = children.length ; i < len; i++) {
+        classes.push(children[i].classList);
+        }
+    for (var i = 0, len = classes.length ; i < len; i++) {
+        if (classes[i].contains("active")) {
+            tabContainer.innerHTML = "";
+            }
+        }
+}
+
+function removeQuestTabs(quest) { // removes all tabs in a deleted quest
+    var ids = [];
+    var children = document.getElementById("q" + quest.id).children;
+    for (var i = 0, len = children.length ; i < len; i++) {
+        ids.push(children[i].id);
+    }
+    for (var i = 0, len = ids.length ; i < len; i++) {
+        localStorage.removeItem("t" + (ids[i]));
+    }
+    localStorage.removeItem("q" + quest.id);
+    document.getElementById("d" + quest.id).remove();
+}
+
+function dateComparator(a, b) { // compares existing data-date entries
     if (a.dataset.date < b.dataset.date) 
         return -1; 
     if (a.dataset.date > b.dataset.date) 
@@ -56,25 +112,25 @@ function comparator(a, b) {
     return 0; 
 } 
 
-function sortByDate(q) { 
-    var activeQuest = ".q-" + q;
+function sortByDate(quest) { // called whenever a data-date value is added to a tab
+    var activeQuest = ".q-" + quest.id;
     var dates = document.querySelectorAll(activeQuest, "[data-date]");
     var datesArray = Array.from(dates); 
-    let sorted = datesArray.sort(comparator); 
+    let sorted = datesArray.sort(dateComparator); 
     sorted.forEach(e => 
-        document.querySelector("#" + "q" + q). 
+        document.querySelector("#" + "q" + quest.id). 
         appendChild(e)); 
 } 
 
-function activateTab(t) { 
+function activateTab(tab) { 
 
     // hide all tab content, then display active tab
-    let listContent = document.getElementsByClassName("list-content");
+    let tabContent = document.getElementsByClassName("tab-content");
     var i;
-    for (i = 0; i < listContent.length; i++) {
-    listContent[i].style.display = "none";
+    for (i = 0; i < tabContent.length; i++) {
+    tabContent[i].style.display = "none";
     };
-    document.getElementById("t" + t).style.display = "block";
+    document.getElementById("t" + tab.id).style.display = "block";
 
     // remove ".active" from all tabs, then make tab t "active"
     let els = document.querySelectorAll(".tab");
@@ -82,11 +138,11 @@ function activateTab(t) {
     for (i = 0; i < els.length; i++) {
         els[i].classList.remove("active")
     };
-    document.getElementById(t).classList.add("active");
+    document.getElementById(tab.id).classList.add("active");
 
     // clear input values when switching between tabs
-    let addInput = "addInput-" + t;
+    let addInput = "addInput-" + tab.id;
     document.getElementById(addInput).value = null;
 };
 
-export { removeQuest, actionOff, sortByDate, activateTab };
+export { Quest, Tab, removeQuest, removeActiveTab, removeQuestTabs, actionOff, sortByDate, activateTab };
