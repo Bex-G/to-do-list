@@ -25,7 +25,7 @@ function getLocalQuests() {
         results.push(JSON.parse(window.localStorage.getItem(key))); // makes array of localStorage items starting with "q"
     }}
     let sorted = results.sort(storageComparator); 
-    let last = sorted[sorted. length - 1];
+    let last = sorted[sorted.length - 1];
     sorted.forEach(result => {
         let quest = new Quest(result.id, result._name);
         makeDropdown(quest);
@@ -33,7 +33,7 @@ function getLocalQuests() {
         makeQName(quest);
         makePlus(quest);
         makeX(quest);
-        getLocalTabs(quest);
+        getLocalTabs(quest); // sends quest to locally-stored tabs to associate the two
         q = (last.id); // picks up where localstorage id numbers left off
     })
 }
@@ -47,19 +47,35 @@ function getLocalTabs(quest) {
         results.push(JSON.parse(window.localStorage.getItem(key))); // makes array of localStorage items starting with "t"
     }} 
     let sorted = results.sort(storageComparator);
-    let last = sorted[sorted. length - 1]; 
+    let last = sorted[sorted.length - 1]; 
         sorted.forEach(result => {
             if (quest.id === result.quest) { // pairs tab objects with their matching quest folders
-                let tab = new Tab(result.id, result.quest, result._name);
+                let tab = new Tab(result.id, result.quest, result._name, result.priority, result.date, result.notes);
                 makeTab(quest, tab);
                 makeInfo(quest, tab);
                 makeAdd(tab);
                 makeList(tab);
-                activateTab(tab);
                 t = (last.id); // picks up where localstorage id numbers left off
+                getTabContent(quest, tab);
+                document.getElementById("a" + quest.id).classList.add("down");
             }
         }
     )
+}
+
+function getTabContent(quest, tab) {
+    if (tab.priority === "true") {
+        document.getElementById(tab.id).classList.toggle("important");
+        document.getElementById("priorityInput" + tab.id).checked = true;
+    }
+    if (tab.date != undefined) {
+    document.getElementById(tab.id).setAttribute("data-date", tab.date);
+    sortByDate(quest);
+    document.getElementById("dateInput" + tab.id).value = tab.date;
+    }
+    if (tab.notes != undefined) {
+    document.getElementById("notes" + tab.id).value = tab.notes;
+    }
 }
 
 function storageComparator(a, b) {
@@ -207,7 +223,7 @@ function makeX(quest) { // hidden until btn event toggles display
 
 function addTab(quest, tabName) {
     t++
-    let tab = new Tab(t, q, tabName);
+    let tab = new Tab(t, quest.id, tabName);
     localStorage.setItem(("t" + tab.id), JSON.stringify(tab));
     makeTab(quest, tab);
     makeInfo(quest, tab);
@@ -323,10 +339,9 @@ function makePriority(info, tab) {
     priorityInput.type = "checkbox";
     priorityInput.id = ("priorityInput" + tab.id);
     priorityInput.addEventListener("change" , () => {
-        let header = document.getElementById("name" + tab.id);
         document.getElementById(tab.id).classList.toggle("important");
-        header.classList.toggle("important"); // colors name header
-        if (priorityInput.checked) {
+        var isChecked = priorityInput.checked;
+        if (isChecked === true) {
             tab.priority = "true";
         } else {
             tab.priority = "false";
