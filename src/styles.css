@@ -130,7 +130,7 @@ textarea {
     padding: 2px;
 }
 
-.list-ul li {
+li {
     margin-top: 10px;
     position: relative;
     border-radius: 5px;

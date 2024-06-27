@@ -28,6 +28,15 @@ class Tab {
     }
 }
 
+class List {
+    constructor(l, t, content, checked) {
+        this.id = l;
+        this.tab = t;
+        this.content = content;
+        this.checked = checked;
+    }
+}
+
 function removeQuest() { // toggles display and enables user to delete quests
     if (rmQuestBtn.textContent === " - Quests") {
         actionOn();
@@ -94,7 +103,7 @@ function removeActiveTab(quest) { // removes any active tabs from tabContainer d
 function removeQuestTabs(quest) { // removes all tabs in a deleted quest
     var ids = [];
     var children = document.getElementById("q" + quest.id).children;
-    for (var i = 0, len = children.length ; i < len; i++) {
+    for (var i = 0, len = children.length; i < len; i++) {
         ids.push(children[i].id);
     }
     for (var i = 0, len = ids.length ; i < len; i++) {
@@ -102,6 +111,19 @@ function removeQuestTabs(quest) { // removes all tabs in a deleted quest
     }
     localStorage.removeItem("q" + quest.id);
     document.getElementById("d" + quest.id).remove();
+}
+
+function removeTabLists(tab) {
+    var ids = [];
+    var children = document.getElementById("list" + tab.id).children;
+    for (var i = 0, len = children.length; i < len; i++) {
+        localStorage.removeItem("l" + (ids[i]));
+    }
+    for (var i = 0, len = ids.length ; i < len; i++) {
+        localStorage.removeItem("l" + (ids[i]));
+    }
+    localStorage.removeItem("l" + tab.id);
+    document.getElementById("list" + tab.id).remove();
 }
 
 function dateComparator(a, b) { // compares existing data-date entries
@@ -145,4 +167,4 @@ function activateTab(tab) {
     document.getElementById(addInput).value = null;
 };
 
-export { Quest, Tab, removeQuest, removeActiveTab, removeQuestTabs, actionOff, sortByDate, activateTab };
+export { Quest, Tab, List, removeQuest, removeActiveTab, removeQuestTabs, removeTabLists, actionOff, sortByDate, activateTab };
