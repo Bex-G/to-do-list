@@ -38,7 +38,7 @@ class List {
 }
 
 function removeQuest() { // toggles display and enables user to delete quests
-    if (rmQuestBtn.textContent === " - Quests") {
+    if (rmQuestBtn.textContent === "-") {
         actionOn();
       } else {
         actionOff();
@@ -61,13 +61,11 @@ function actionOn() {
     for (i = 0; i < remove.length; i++) {
         remove[i].style.display = "none";
     }
-    rmQuestBtn.style.backgroundColor = "red";
-    rmQuestBtn.style.color = "white";
-    rmQuestBtn.textContent = "Finish";
+    rmQuestBtn.textContent = "FINISH";
 }
 
 function actionOff() {
-    rmQuestBtn.textContent = " - Quests";
+    rmQuestBtn.textContent = "-";
     let x = document.querySelectorAll(".x-action");
     var i;
     for (i = 0; i < x.length; i++) {
@@ -83,8 +81,7 @@ function actionOff() {
     for (i = 0; i < remove.length; i++) {
         remove[i].style.display = "flex";
     }
-    rmQuestBtn.style.backgroundColor = "transparent";
-    rmQuestBtn.style.color = "black";
+    rmQuestBtn.style.fontSize = "x-large";
 }
 
 function removeActiveTab(quest) { // removes any active tabs from tabContainer display when quests are deleted

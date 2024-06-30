@@ -2,8 +2,6 @@ import { Quest, Tab, removeActiveTab, removeQuestTabs, removeTabLists, actionOff
 
 const sidebar = document.getElementById("sidebar");
 const tabContainer = document.getElementById("tabContainer");
-const rmQuestBtn = document.getElementById("rmQuestBtn");
-rmQuestBtn.textContent = " - Quests";
 
 let q = 0; // tracks quest id numbers
 let t = 0; // tracks tab id numbers
@@ -115,7 +113,7 @@ function addQuest() {
     actionOff(); // toggles removeQuest display when new quest is added
     let questName = prompt("What is your quest?");
         if (questName != null && questName != "") {
-            if (questName.length <= 12) {
+            if (questName.length <= 17) {
                 q++
                 let quest = new Quest(q, questName);
                 makeDropdown(quest);
@@ -125,7 +123,7 @@ function addQuest() {
                 makeX(quest);
                 localStorage.setItem(("q" + quest.id), JSON.stringify(quest));
             } else {
-                alert("Oops! Please choose a name that is fewer than 12 characters long. :)");
+                alert("Oops! Please choose a name that is fewer than 17 characters long. :)");
             }
         }
 }
@@ -160,10 +158,10 @@ function makeArrow(quest) {
 }
 
 function makeQName(quest) {
-    let qName = document.createElement("h3"); 
+    let qName = document.createElement("p"); 
     qName.textContent = quest.name;
     qName.contentEditable = "true";
-    let maxLength = 12; 
+    let maxLength = 17; 
     let minLength = 1;
     qName.addEventListener("keydown", (e) => { 
         let textLength = qName.textContent.length; 
@@ -172,6 +170,7 @@ function makeQName(quest) {
             qName.blur(); 
         } else if (textLength === (minLength) && e.key === "Backspace") {
             alert("This must be at least 1 character long.")
+            qName.textContent = "untitled";
             qName.blur();
         }
         if (e.key === "Enter") {
@@ -199,12 +198,12 @@ function makePlus(quest) {
     let dContent = document.getElementById("q" + quest.id);
     let arrow = document.getElementById("a" + quest.id);
         if (tabName != null && tabName != "") {
-            if (tabName.length <= 26) {
+            if (tabName.length <= 30) {
                 addTab(quest, tabName);
                 dContent.classList.add("show");
                 arrow.classList.add("down");
             } else {
-                alert("Oops! Please choose a name that is fewer than 26 characters long. :)");
+                alert("Oops! Please choose a name that is fewer than 30 characters long. :)");
             }
         }
     })
@@ -276,21 +275,25 @@ function makeInfo(quest, tab) {
     header.classList = "tab-header";
     let info = document.createElement("div");
     info.classList = "tab-info";
+    let left = document.createElement("div");
+    let right = document.createElement("div");
 
     makeTName(header, tab);
     makeRemoveBtn(quest, tab);
-    info.appendChild(header);
-    makePriority(info, tab);
-    makeDate(info, quest, tab);
-    makeNotes(info, tab);
+    tabContent.appendChild(header);
+    makePriority(left, tab);
+    makeDate(left, quest, tab);
+    makeNotes(right, tab);
+    info.appendChild(left);
+    info.appendChild(right);
     tabContent.appendChild(info);
     tabContainer.appendChild(tabContent);
 }
 
 function makeTName(header, tab) {
     let tabBtn = document.getElementById("tb" + tab.id);
-        if (tab.name.length >= 12) {
-            tabBtn.textContent = tab.name.substring(0,12) + "...";
+        if (tab.name.length > 22) {
+            tabBtn.textContent = tab.name.substring(0,22) + "...";
         } else {
             tabBtn.textContent = tab.name;
         }
@@ -303,7 +306,7 @@ function makeTName(header, tab) {
             tabHeader.blur();
         }
     })
-    let maxLength = 26; 
+    let maxLength = 30; 
     tabHeader.addEventListener("keydown", (e) => { 
         let textLength = tabHeader.textContent.length; 
         if (textLength >= maxLength && e.key !== "Backspace") { 
@@ -312,8 +315,8 @@ function makeTName(header, tab) {
         }
     })
     tabHeader.addEventListener("focusout", () => {
-        if (tabHeader.textContent.length >= 12) {
-            tabBtn.textContent = tabHeader.textContent.substring(0,12) + "...";
+        if (tabHeader.textContent.length > 22) {
+            tabBtn.textContent = tabHeader.textContent.substring(0,22) + "...";
         } else if (tabHeader.textContent.length < 1) {
             tabHeader.textContent = "untitled";
             tabBtn.textContent = "untitled";
@@ -332,7 +335,14 @@ function makeTName(header, tab) {
 function makeRemoveBtn(quest, tab) {
     let btn = document.createElement("p");
     btn.classList = "remove-tab";
-    let txt = document.createTextNode("\u00D7");
+    let txt = document.createElement("p");
+    txt.textContent = "X";
+    txt.addEventListener("mouseover", () => {
+        txt.style.color = "red";
+    })
+    txt.addEventListener("mouseout", () => {
+        txt.style.color = "white";
+    })
     btn.appendChild(txt);
     btn.addEventListener("click", () => {
     let tabContent = document.getElementById("t" + tab.id);
@@ -352,7 +362,7 @@ function makeRemoveBtn(quest, tab) {
     document.getElementById(tab.id).appendChild(btn);
 }
 
-function makePriority(info, tab) {
+function makePriority(left, tab) {
     let p = document.createElement("div");
     p.id = "priority";
     let pL = document.createElement("label");
@@ -373,10 +383,10 @@ function makePriority(info, tab) {
         localStorage.setItem(("t" + tab.id), JSON.stringify(tab));
     })
     p.appendChild(priorityInput);
-    info.appendChild(p);
+    left.appendChild(p);
 }
 
-function makeDate(info, quest, tab) {
+function makeDate(left, quest, tab) {
     let div = document.createElement("div");
     div.id = "date";
     let dL = document.createElement("label");
@@ -393,10 +403,10 @@ function makeDate(info, quest, tab) {
         localStorage.setItem(("t" + tab.id), JSON.stringify(tab));
     })
     div.appendChild(dateInput);
-    info.appendChild(div);
+    left.appendChild(div);
 }
 
-function makeNotes(info, tab) {
+function makeNotes(right, tab) {
     let nb = document.createElement("div");
     nb.id = "notebook";
     let nbL = document.createElement("label");
@@ -416,7 +426,7 @@ function makeNotes(info, tab) {
     })
     nb.appendChild(nbL);
     nb.appendChild(notes);
-    info.appendChild(nb);
+    right.appendChild(nb);
 }
 
 function makeAdd(tab) {
