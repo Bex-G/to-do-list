@@ -1,5 +1,5 @@
-import { addQuest } from "../dom";
-import { removeQuest } from "../logic";
+import { addQuest } from "./dom";
+import { removeQuest } from "./logic";
 
 document.getElementById("addQuestBtn").addEventListener("click", () => {
     addQuest();
