@@ -1,1 +1,3 @@
-# to-do-list
+This is a task-manager/to-do list program that I've created in the style of a video game quest log (just for fun!). It enables a user to add their own quests, take note of any side quests, and log some of the steps they might take to complete these fantasy goals. 
+
+This program uses JSON and localStorage methods, so any changes/additions the user makes can be saved and repopulated accordingly upon loading!
