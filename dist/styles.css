@@ -6,12 +6,12 @@
 
 @font-face {
     font-family: 'dragon-fire', sans-serif;
-    src: url(../assets/fonts/Dragon-Fire.woff);
+    src: url(./assets/fonts/Dragon-Fire.woff);
 }
 
 #content {
     height: 100vh;
-    background-image: url(../assets/images/castle.jpg);
+    background-image: url(./assets/images/castle.jpg);
     background-size: cover;
     color: white;
     font-family: fantasy, sans-serif;
@@ -225,7 +225,6 @@ input:checked+span {
 #credit {
     position: fixed;
     bottom: 0;
-    margin-left: 5px;
     display: flex;
     width: 100%;
     justify-content: center;
